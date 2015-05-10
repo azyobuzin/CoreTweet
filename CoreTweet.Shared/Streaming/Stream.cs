@@ -194,9 +194,11 @@ namespace LibAzyotter.Api
                 parameters = new StreamingParameters();
 
             var t = this.GetUrl(type);
-            return await
+            var stream = await
                 (await this.Client.InternalSendRequestAsync(this.GetMethodType(type), t.Item1, TwitterClient.ApiVersion, new Uri(t.Item2, UriKind.Relative), parameters.Parameters, null, cancellationToken).ConfigureAwait(false))
                 .Content.ReadAsStreamAsync().ConfigureAwait(false);
+            cancellationToken.Register(stream.Dispose);
+            return stream;
         }
 
         /// <summary>

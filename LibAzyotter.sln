@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTweet.Streaming.Reactive", "CoreTweet.Streaming.Reactive\CoreTweet.Streaming.Reactive.csproj", "{7F946219-A568-4E49-955D-F18C20CEF016}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibAzyotter.Reactive", "CoreTweet.Streaming.Reactive\LibAzyotter.Reactive.csproj", "{7F946219-A568-4E49-955D-F18C20CEF016}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9781AAC6-F2C8-4DAA-9922-46B937854383}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,13 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTweet.net45", "CoreTweet.net45\CoreTweet.net45.csproj", "{5AE5A341-5E2B-42AF-946A-7043BAD12817}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibAzyotter.net45", "CoreTweet.net45\LibAzyotter.net45.csproj", "{5AE5A341-5E2B-42AF-946A-7043BAD12817}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTweet.Pcl", "CoreTweet.Pcl\CoreTweet.Pcl.csproj", "{F44D26B3-DDFB-4E62-9A4F-D127C6B42314}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibAzyotter.Pcl", "CoreTweet.Pcl\LibAzyotter.Pcl.csproj", "{F44D26B3-DDFB-4E62-9A4F-D127C6B42314}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTweet.Streaming.Reactive.Pcl", "CoreTweet.Streaming.Reactive.Pcl\CoreTweet.Streaming.Reactive.Pcl.csproj", "{26860A9F-C486-40DC-8143-67C1D5AAB6C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibAzyotter.Reactive.Pcl", "CoreTweet.Streaming.Reactive.Pcl\LibAzyotter.Reactive.Pcl.csproj", "{26860A9F-C486-40DC-8143-67C1D5AAB6C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTweet.Universal", "CoreTweet.Universal\CoreTweet.Universal.csproj", "{AA61A688-5AF5-4171-99CA-5D3EF3DCE9E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibAzyotter.Universal", "CoreTweet.Universal\LibAzyotter.Universal.csproj", "{AA61A688-5AF5-4171-99CA-5D3EF3DCE9E6}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CoreTweet.Shared", "CoreTweet.Shared\CoreTweet.Shared.shproj", "{0143F454-1D66-48D0-AA28-7BA7A2502EA5}"
 EndProject
