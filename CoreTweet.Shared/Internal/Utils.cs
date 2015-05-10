@@ -46,21 +46,13 @@ namespace CoreTweet.Core
             if(t is IEnumerable<KeyValuePair<string, object>>)
                 return t as IEnumerable<KeyValuePair<string, object>>;
 
-#if WIN_RT
             var type = typeof(T).GetTypeInfo();
-#else
-            var type = typeof(T);
-#endif
 
             if(type.GetCustomAttributes(typeof(TwitterParametersAttribute), false).Any())
             {
                 var d = new Dictionary<string, object>();
 
-#if WIN_RT
                 foreach(var f in type.DeclaredFields.Where(x => x.IsPublic && !x.IsStatic))
-#else
-                foreach(var f in type.GetFields(BindingFlags.Instance | BindingFlags.Public))
-#endif
                 {
                     var attr = (TwitterParameterAttribute)f.GetCustomAttributes(true).FirstOrDefault(y => y is TwitterParameterAttribute);
                     var value = f.GetValue(t);
@@ -74,11 +66,7 @@ namespace CoreTweet.Core
                     }
                 }
 
-#if WIN_RT
                 foreach(var p in type.DeclaredProperties.Where(x => x.CanRead && x.GetMethod.IsPublic && !x.GetMethod.IsStatic))
-#else
-                foreach(var p in type.GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(x => x.CanRead))
-#endif
                 {
                     var attr = (TwitterParameterAttribute)p.GetCustomAttributes(true).FirstOrDefault(y => y is TwitterParameterAttribute);
                     var value = p.GetValue(t, null);
@@ -104,13 +92,8 @@ namespace CoreTweet.Core
                     var ieElementTypes =
                         type.GetInterfaces()
                         .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-#if WIN_RT
                         .Select(x => x.GenericTypeArguments[0].GetTypeInfo())
                         .Where(x => x.IsGenericType && x.GenericTypeArguments[0] == typeof(string));
-#else
-                        .Select(x => x.GetGenericArguments()[0])
-                        .Where(x => x.IsGenericType && x.GetGenericArguments()[0] == typeof(string));
-#endif
                     foreach(var genericElement in ieElementTypes)
                     {
                         var genericTypeDefinition = genericElement.GetGenericTypeDefinition();
@@ -143,17 +126,11 @@ namespace CoreTweet.Core
 
         private static IDictionary<string,object> AnnoToDictionary<T>(T f)
         {
-#if WIN_RT
             return typeof(T).GetRuntimeProperties()
                 .Where(x => x.CanRead && x.GetIndexParameters().Length == 0)
                 .Select(x => Tuple.Create(x.Name, x.GetMethod))
                 .Where(x => x.Item2.IsPublic && !x.Item2.IsStatic)
                 .ToDictionary(x => x.Item1, x => x.Item2.Invoke(f, null));
-#else
-            return typeof(T).GetProperties()
-                .Where(x => x.CanRead && x.GetIndexParameters().Length == 0)
-                .ToDictionary(x => x.Name, x => x.GetValue(f, null));
-#endif
         }
 
         private static object GetExpressionValue(Expression<Func<string,object>> expr)
@@ -164,11 +141,7 @@ namespace CoreTweet.Core
 
         private static object GetDefaultValue(Type type)
         {
-            return type
-#if WIN_RT
-                .GetTypeInfo()
-#endif
-                .IsValueType ? Activator.CreateInstance(type) : null;
+            return type.GetTypeInfo().IsValueType ? Activator.CreateInstance(type) : null;
         }
 
         internal static IEnumerable<KeyValuePair<string, object>> ExpressionsToDictionary(IEnumerable<Expression<Func<string,object>>> exprs)

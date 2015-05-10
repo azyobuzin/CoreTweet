@@ -126,7 +126,6 @@ namespace CoreTweet
         }
     }
 
-#if WIN_RT
     internal static class TypeInfoExtensions
     {
         internal static IEnumerable<TypeInfo> GetInterfaces(this TypeInfo source)
@@ -144,6 +143,5 @@ namespace CoreTweet
             return source.GetMethod;
         }
     }
-#endif
 }
 
