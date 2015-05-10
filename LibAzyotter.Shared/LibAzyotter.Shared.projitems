@@ -12,7 +12,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Connection\ApiHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connection\IRequestBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connection\ITwitterConnection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connection\OAuthHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connection\OAuthRequestBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connection\RequestBuilderBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connection\TwitterConnection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internal\Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TwitterClient.cs" />
   </ItemGroup>
 </Project>

@@ -22,7 +22,7 @@
 // THE SOFTWARE.
 using System;
 
-namespace CoreTweet
+namespace LibAzyotter
 {
     /// <summary>
     /// Twitter parameter attribute.

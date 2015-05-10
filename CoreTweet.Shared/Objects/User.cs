@@ -22,11 +22,11 @@
 // THE SOFTWARE.
 
 using System;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace CoreTweet
+namespace LibAzyotter
 {
     /// <summary>
     /// Represents a user.

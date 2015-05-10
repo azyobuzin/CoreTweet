@@ -24,10 +24,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 using Newtonsoft.Json;
 
-namespace CoreTweet
+namespace LibAzyotter
 {
     /// <summary>
     /// <para>Represents a place, which are specific, named locations with corresponding geo coordinates.</para>

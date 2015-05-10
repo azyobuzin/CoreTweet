@@ -25,10 +25,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     partial class Friends
     {
@@ -53,7 +54,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<long>> IdsAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<Cursored<long>>(MethodType.Get, "friends/ids", parameters);
+            return this.Tokens.AccessApiAsync<Cursored<long>>(HttpMethod.Get, "friends/ids", parameters);
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<long>> IdsAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<long>>(MethodType.Get, "friends/ids", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<long>>(HttpMethod.Get, "friends/ids", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -99,7 +100,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<long>> IdsAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<long>, T>(MethodType.Get, "friends/ids", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<long>, T>(HttpMethod.Get, "friends/ids", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -121,7 +122,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<User>> ListAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<Cursored<User>>(MethodType.Get, "friends/list", parameters);
+            return this.Tokens.AccessApiAsync<Cursored<User>>(HttpMethod.Get, "friends/list", parameters);
         }
 
         /// <summary>
@@ -144,7 +145,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<User>> ListAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<User>>(MethodType.Get, "friends/list", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<User>>(HttpMethod.Get, "friends/list", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -167,7 +168,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<User>> ListAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<User>, T>(MethodType.Get, "friends/list", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<User>, T>(HttpMethod.Get, "friends/list", parameters, cancellationToken);
         }
     }
 }

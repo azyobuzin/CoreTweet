@@ -25,11 +25,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreTweet.Core;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     partial class DirectMessages
     {
@@ -54,7 +54,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<DirectMessage>> ReceivedAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiArrayAsync<DirectMessage>(MethodType.Get, "direct_messages", parameters);
+            return this.Tokens.AccessApiArrayAsync<DirectMessage>(HttpMethod.Get, "direct_messages", parameters);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<DirectMessage>> ReceivedAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<DirectMessage>(MethodType.Get, "direct_messages", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<DirectMessage>(HttpMethod.Get, "direct_messages", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<DirectMessage>> ReceivedAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<DirectMessage, T>(MethodType.Get, "direct_messages", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<DirectMessage, T>(HttpMethod.Get, "direct_messages", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<DirectMessage>> SentAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiArrayAsync<DirectMessage>(MethodType.Get, "direct_messages/sent", parameters);
+            return this.Tokens.AccessApiArrayAsync<DirectMessage>(HttpMethod.Get, "direct_messages/sent", parameters);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<DirectMessage>> SentAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<DirectMessage>(MethodType.Get, "direct_messages/sent", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<DirectMessage>(HttpMethod.Get, "direct_messages/sent", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<DirectMessage>> SentAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<DirectMessage, T>(MethodType.Get, "direct_messages/sent", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<DirectMessage, T>(HttpMethod.Get, "direct_messages/sent", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<DirectMessageResponse> ShowAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<DirectMessageResponse>(MethodType.Get, "direct_messages/show", parameters);
+            return this.Tokens.AccessApiAsync<DirectMessageResponse>(HttpMethod.Get, "direct_messages/show", parameters);
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<DirectMessageResponse> ShowAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<DirectMessageResponse>(MethodType.Get, "direct_messages/show", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<DirectMessageResponse>(HttpMethod.Get, "direct_messages/show", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<DirectMessageResponse> ShowAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<DirectMessageResponse, T>(MethodType.Get, "direct_messages/show", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<DirectMessageResponse, T>(HttpMethod.Get, "direct_messages/show", parameters, cancellationToken);
         }
 
         //POST Methods
@@ -245,7 +245,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<DirectMessageResponse> NewAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<DirectMessageResponse>(MethodType.Post, "direct_messages/new", parameters);
+            return this.Tokens.AccessApiAsync<DirectMessageResponse>(HttpMethod.Post, "direct_messages/new", parameters);
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<DirectMessageResponse> NewAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<DirectMessageResponse>(MethodType.Post, "direct_messages/new", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<DirectMessageResponse>(HttpMethod.Post, "direct_messages/new", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<DirectMessageResponse> NewAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<DirectMessageResponse, T>(MethodType.Post, "direct_messages/new", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<DirectMessageResponse, T>(HttpMethod.Post, "direct_messages/new", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -307,7 +307,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<DirectMessageResponse> DestroyAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<DirectMessageResponse>(MethodType.Post, "direct_messages/destroy", parameters);
+            return this.Tokens.AccessApiAsync<DirectMessageResponse>(HttpMethod.Post, "direct_messages/destroy", parameters);
         }
 
         /// <summary>
@@ -326,7 +326,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<DirectMessageResponse> DestroyAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<DirectMessageResponse>(MethodType.Post, "direct_messages/destroy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<DirectMessageResponse>(HttpMethod.Post, "direct_messages/destroy", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -345,7 +345,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<DirectMessageResponse> DestroyAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<DirectMessageResponse, T>(MethodType.Post, "direct_messages/destroy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<DirectMessageResponse, T>(HttpMethod.Post, "direct_messages/destroy", parameters, cancellationToken);
         }
     }
 }

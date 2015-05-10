@@ -25,16 +25,14 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
-using CoreTweet.Core;
+using System.Threading.Tasks;
+using LibAzyotter.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-#if WIN_RT
-using System.Threading.Tasks;
-#endif
-
-namespace CoreTweet
+namespace LibAzyotter
 {
     /// <summary>
     /// Exception when parsing.
@@ -50,7 +48,7 @@ namespace CoreTweet
         public string Json { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoreTweet.ParsingException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception.
+        /// Initializes a new instance of the <see cref="ParsingException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.</param>
         /// <param name="json">The JSON that couldn't be parsed.</param>
@@ -66,19 +64,16 @@ namespace CoreTweet
     /// </summary>
     public class TwitterException : Exception, ITwitterResponse
     {
-        private TwitterException(HttpStatusCode status, Error[] errors, RateLimit rateLimit, string json, WebException innerException)
-            : base(errors[0].Message, innerException)
+        private TwitterException(HttpResponseMessage responseMessage, Error[] errors, RateLimit rateLimit, string json)
+            : base(errors[0].Message)
         {
-            this.Status = status;
+            this.ResponseMessage = responseMessage;
             this.Errors = errors;
             this.RateLimit = rateLimit;
             this.Json = json;
         }
-
-        /// <summary>
-        ///     The status of the response.
-        /// </summary>
-        public HttpStatusCode Status { get; private set; }
+        
+        public HttpResponseMessage ResponseMessage { get; private set; }
 
         /// <summary>
         ///     The error messages.
@@ -121,52 +116,17 @@ namespace CoreTweet
             return new[] { new Error { Message = json } };
         }
 
-        private static TwitterException Create(string json, HttpStatusCode statusCode, WebException ex, RateLimit rateLimit)
-        {
-            return new TwitterException(statusCode, ParseErrors(json), rateLimit, json, ex);
-        }
-
-        /// <summary>
-        /// Create a <see cref="CoreTweet.TwitterException"/> instance from the <see cref="System.Net.WebException"/>.
-        /// </summary>
-        /// <param name="ex">The thrown <see cref="System.Net.WebException"/>.</param>
-        /// <returns><see cref="CoreTweet.TwitterException"/> instance or null.</returns>
-        public static TwitterException Create(WebException ex)
+        public static async Task<TwitterException> CreateAsync(HttpResponseMessage response)
         {
             try
             {
-                var response = (HttpWebResponse)ex.Response;
-                using(var sr = new StreamReader(response.GetResponseStream()))
-                    return Create(sr.ReadToEnd(), response.StatusCode, ex, InternalUtils.ReadRateLimit(response));
+                var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                return new TwitterException(response, ParseErrors(json), InternalUtils.ReadRateLimit(response), json);
             }
             catch
             {
                 return null;
             }
         }
-
-#if WIN_RT
-        /// <summary>
-        /// Create a <see cref="CoreTweet.TwitterException"/> instance from the <see cref="CoreTweet.AsyncResponse"/>.
-        /// </summary>
-        /// <returns><see cref="CoreTweet.TwitterException"/> instance or null.</returns>
-        public static async Task<TwitterException> Create(AsyncResponse response)
-        {
-            try
-            {
-                using(var sr = new StreamReader(await response.GetResponseStreamAsync().ConfigureAwait(false)))
-                    return Create(
-                        await sr.ReadToEndAsync().ConfigureAwait(false),
-                        (HttpStatusCode)response.StatusCode,
-                        null,
-                        InternalUtils.ReadRateLimit(response)
-                    );
-            }
-            catch
-            {
-                return null;
-            }
-        }
-#endif
     }
 }

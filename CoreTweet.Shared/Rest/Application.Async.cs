@@ -25,11 +25,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreTweet.Core;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     partial class Application
     {
@@ -47,7 +47,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<DictionaryResponse<string, Dictionary<string, RateLimit>>> RateLimitStatusAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiDictionaryAsync<string, Dictionary<string, RateLimit>>(MethodType.Get, "application/rate_limit_status", parameters, "resources");
+            return this.Tokens.AccessApiDictionaryAsync<string, Dictionary<string, RateLimit>>(HttpMethod.Get, "application/rate_limit_status", parameters, "resources");
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<DictionaryResponse<string, Dictionary<string, RateLimit>>> RateLimitStatusAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiDictionaryAsync<string, Dictionary<string, RateLimit>>(MethodType.Get, "application/rate_limit_status", parameters, cancellationToken, "resources");
+            return this.Tokens.AccessApiDictionaryAsync<string, Dictionary<string, RateLimit>>(HttpMethod.Get, "application/rate_limit_status", parameters, cancellationToken, "resources");
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<DictionaryResponse<string, Dictionary<string, RateLimit>>> RateLimitStatusAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiDictionaryAsync<string, Dictionary<string, RateLimit>, T>(MethodType.Get, "application/rate_limit_status", parameters, cancellationToken, "resources");
+            return this.Tokens.AccessApiDictionaryAsync<string, Dictionary<string, RateLimit>, T>(HttpMethod.Get, "application/rate_limit_status", parameters, cancellationToken, "resources");
         }
     }
 }

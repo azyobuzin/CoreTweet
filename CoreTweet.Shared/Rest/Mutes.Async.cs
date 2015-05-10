@@ -25,10 +25,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     partial class MutesUsers
     {
@@ -46,7 +47,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<long>> IdsAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<Cursored<long>>(MethodType.Get, "mutes/users/ids", parameters);
+            return this.Tokens.AccessApiAsync<Cursored<long>>(HttpMethod.Get, "mutes/users/ids", parameters);
         }
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<long>> IdsAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<long>>(MethodType.Get, "mutes/users/ids", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<long>>(HttpMethod.Get, "mutes/users/ids", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<long>> IdsAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<long>, T>(MethodType.Get, "mutes/users/ids", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<long>, T>(HttpMethod.Get, "mutes/users/ids", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<User>> ListAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<Cursored<User>>(MethodType.Get, "mutes/users/list", parameters);
+            return this.Tokens.AccessApiAsync<Cursored<User>>(HttpMethod.Get, "mutes/users/list", parameters);
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<User>> ListAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<User>>(MethodType.Get, "mutes/users/list", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<User>>(HttpMethod.Get, "mutes/users/list", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -131,7 +132,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<User>> ListAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<User>, T>(MethodType.Get, "mutes/users/list", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<User>, T>(HttpMethod.Get, "mutes/users/list", parameters, cancellationToken);
         }
 
         //POST Methods
@@ -153,7 +154,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> CreateAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Post, "mutes/users/create", parameters);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Post, "mutes/users/create", parameters);
         }
 
         /// <summary>
@@ -174,7 +175,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> CreateAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Post, "mutes/users/create", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Post, "mutes/users/create", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -195,7 +196,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> CreateAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse, T>(MethodType.Post, "mutes/users/create", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse, T>(HttpMethod.Post, "mutes/users/create", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -215,7 +216,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> DestroyAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Post, "mutes/users/destroy", parameters);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Post, "mutes/users/destroy", parameters);
         }
 
         /// <summary>
@@ -236,7 +237,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> DestroyAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Post, "mutes/users/destroy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Post, "mutes/users/destroy", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -257,7 +258,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> DestroyAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse, T>(MethodType.Post, "mutes/users/destroy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse, T>(HttpMethod.Post, "mutes/users/destroy", parameters, cancellationToken);
         }
     }
 }

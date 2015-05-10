@@ -24,16 +24,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     /// <summary>
     /// Provides a set of methods for the wrapper of GET/POST direct_messages.
     /// </summary>
     public partial class DirectMessages : ApiProviderBase
     {
-        internal DirectMessages(TokensBase e) : base(e) { }
+        internal DirectMessages(TwitterClient e) : base(e) { }
 
 #if false
         //GET Methods

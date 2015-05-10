@@ -25,11 +25,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreTweet.Core;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     partial class Lists
     {
@@ -49,9 +49,9 @@ namespace CoreTweet.Rest
         /// <para>The task object representing the asynchronous operation.</para>
         /// <para>The Result property on the task object returns the lists.</para>
         /// </returns>
-        public Task<ListedResponse<CoreTweet.List>> ListAsync(params Expression<Func<string, object>>[] parameters)
+        public Task<ListedResponse<List>> ListAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiArrayAsync<CoreTweet.List>(MethodType.Get, "lists/list", parameters);
+            return this.Tokens.AccessApiArrayAsync<List>(HttpMethod.Get, "lists/list", parameters);
         }
 
         /// <summary>
@@ -69,9 +69,9 @@ namespace CoreTweet.Rest
         /// <para>The task object representing the asynchronous operation.</para>
         /// <para>The Result property on the task object returns the lists.</para>
         /// </returns>
-        public Task<ListedResponse<CoreTweet.List>> ListAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<ListedResponse<List>> ListAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<CoreTweet.List>(MethodType.Get, "lists/list", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<List>(HttpMethod.Get, "lists/list", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -89,9 +89,9 @@ namespace CoreTweet.Rest
         /// <para>The task object representing the asynchronous operation.</para>
         /// <para>The Result property on the task object returns the lists.</para>
         /// </returns>
-        public Task<ListedResponse<CoreTweet.List>> ListAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<ListedResponse<List>> ListAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<CoreTweet.List, T>(MethodType.Get, "lists/list", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<List, T>(HttpMethod.Get, "lists/list", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -108,29 +108,9 @@ namespace CoreTweet.Rest
         /// <para>The task object representing the asynchronous operation.</para>
         /// <para>The Result property on the task object returns the lists.</para>
         /// </returns>
-        public Task<Cursored<CoreTweet.List>> MembershipsAsync(params Expression<Func<string, object>>[] parameters)
+        public Task<Cursored<List>> MembershipsAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<Cursored<CoreTweet.List>>(MethodType.Get, "lists/memberships", parameters);
-        }
-
-        /// <summary>
-        /// <para>Returns the lists the specified user has been added to as an asynchronous operation.</para>
-        /// <para>If user_id or screen_name are not provided the memberships for the authenticating user are returned.</para>
-        /// <para>Available parameters: </para>
-        /// <para>- <c>string</c> sereen_name (optional)</para>
-        /// <para>- <c>long</c> user_id (optional)</para>
-        /// <para>- <c>long</c> cursor (semi-optional)</para>
-        /// <para>- <c>bool</c> filter_to_owned_lists (optional)</para>
-        /// </summary>
-        /// <param name="parameters">The parameters.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// <para>The task object representing the asynchronous operation.</para>
-        /// <para>The Result property on the task object returns the lists.</para>
-        /// </returns>
-        public Task<Cursored<CoreTweet.List>> MembershipsAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return this.Tokens.AccessApiAsync<Cursored<CoreTweet.List>>(MethodType.Get, "lists/memberships", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<List>>(HttpMethod.Get, "lists/memberships", parameters);
         }
 
         /// <summary>
@@ -148,9 +128,29 @@ namespace CoreTweet.Rest
         /// <para>The task object representing the asynchronous operation.</para>
         /// <para>The Result property on the task object returns the lists.</para>
         /// </returns>
-        public Task<Cursored<CoreTweet.List>> MembershipsAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<Cursored<List>> MembershipsAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<CoreTweet.List>, T>(MethodType.Get, "lists/memberships", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<List>>(HttpMethod.Get, "lists/memberships", parameters, cancellationToken);
+        }
+
+        /// <summary>
+        /// <para>Returns the lists the specified user has been added to as an asynchronous operation.</para>
+        /// <para>If user_id or screen_name are not provided the memberships for the authenticating user are returned.</para>
+        /// <para>Available parameters: </para>
+        /// <para>- <c>string</c> sereen_name (optional)</para>
+        /// <para>- <c>long</c> user_id (optional)</para>
+        /// <para>- <c>long</c> cursor (semi-optional)</para>
+        /// <para>- <c>bool</c> filter_to_owned_lists (optional)</para>
+        /// </summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// <para>The task object representing the asynchronous operation.</para>
+        /// <para>The Result property on the task object returns the lists.</para>
+        /// </returns>
+        public Task<Cursored<List>> MembershipsAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return this.Tokens.AccessApiAsync<Cursored<List>, T>(HttpMethod.Get, "lists/memberships", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -167,9 +167,9 @@ namespace CoreTweet.Rest
         /// <para>The task object representing the asynchronous operation.</para>
         /// <para>The Result property on the task object returns the lists.</para>
         /// </returns>
-        public Task<Cursored<CoreTweet.List>> OwnershipsAsync(params Expression<Func<string, object>>[] parameters)
+        public Task<Cursored<List>> OwnershipsAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<Cursored<CoreTweet.List>>(MethodType.Get, "lists/ownerships", parameters);
+            return this.Tokens.AccessApiAsync<Cursored<List>>(HttpMethod.Get, "lists/ownerships", parameters);
         }
 
         /// <summary>
@@ -187,9 +187,9 @@ namespace CoreTweet.Rest
         /// <para>The task object representing the asynchronous operation.</para>
         /// <para>The Result property on the task object returns the lists.</para>
         /// </returns>
-        public Task<Cursored<CoreTweet.List>> OwnershipsAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<Cursored<List>> OwnershipsAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<CoreTweet.List>>(MethodType.Get, "lists/ownerships", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<List>>(HttpMethod.Get, "lists/ownerships", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -207,9 +207,9 @@ namespace CoreTweet.Rest
         /// <para>The task object representing the asynchronous operation.</para>
         /// <para>The Result property on the task object returns the lists.</para>
         /// </returns>
-        public Task<Cursored<CoreTweet.List>> OwnershipsAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<Cursored<List>> OwnershipsAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<CoreTweet.List>, T>(MethodType.Get, "lists/ownerships", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<List>, T>(HttpMethod.Get, "lists/ownerships", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> ShowAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Get, "lists/show", parameters);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Get, "lists/show", parameters);
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> ShowAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Get, "lists/show", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Get, "lists/show", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> ShowAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse, T>(MethodType.Get, "lists/show", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse, T>(HttpMethod.Get, "lists/show", parameters, cancellationToken);
         }
 
 
@@ -293,30 +293,9 @@ namespace CoreTweet.Rest
         /// <para>The task object representing the asynchronous operation.</para>
         /// <para>The Result property on the task object returns the lists.</para>
         /// </returns>
-        public Task<Cursored<CoreTweet.List>> SubscriptionsAsync(params Expression<Func<string, object>>[] parameters)
+        public Task<Cursored<List>> SubscriptionsAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<Cursored<CoreTweet.List>>(MethodType.Get, "lists/subscriptions", parameters);
-        }
-
-        /// <summary>
-        /// <para>Obtain a collection of the lists the specified user is subscribed to, 20 lists per page by default as an asynchronous operation.</para>
-        /// <para>Does not include the user's own lists.</para>
-        /// <para>Note: A user_id or screen_name must be provided.</para>
-        /// <para>Available parameters:</para>
-        /// <para>- <c>long</c> user_id (optional)</para>
-        /// <para>- <c>string</c> screen_name (optional)</para>
-        /// <para>- <c>int</c> count (optional)</para>
-        /// <para>- <c>long</c> cursor (optional)</para>
-        /// </summary>
-        /// <param name="parameters">The parameters.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// <para>The task object representing the asynchronous operation.</para>
-        /// <para>The Result property on the task object returns the lists.</para>
-        /// </returns>
-        public Task<Cursored<CoreTweet.List>> SubscriptionsAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return this.Tokens.AccessApiAsync<Cursored<CoreTweet.List>>(MethodType.Get, "lists/subscriptions", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<List>>(HttpMethod.Get, "lists/subscriptions", parameters);
         }
 
         /// <summary>
@@ -335,9 +314,30 @@ namespace CoreTweet.Rest
         /// <para>The task object representing the asynchronous operation.</para>
         /// <para>The Result property on the task object returns the lists.</para>
         /// </returns>
-        public Task<Cursored<CoreTweet.List>> SubscriptionsAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<Cursored<List>> SubscriptionsAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<CoreTweet.List>, T>(MethodType.Get, "lists/subscriptions", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<List>>(HttpMethod.Get, "lists/subscriptions", parameters, cancellationToken);
+        }
+
+        /// <summary>
+        /// <para>Obtain a collection of the lists the specified user is subscribed to, 20 lists per page by default as an asynchronous operation.</para>
+        /// <para>Does not include the user's own lists.</para>
+        /// <para>Note: A user_id or screen_name must be provided.</para>
+        /// <para>Available parameters:</para>
+        /// <para>- <c>long</c> user_id (optional)</para>
+        /// <para>- <c>string</c> screen_name (optional)</para>
+        /// <para>- <c>int</c> count (optional)</para>
+        /// <para>- <c>long</c> cursor (optional)</para>
+        /// </summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// <para>The task object representing the asynchronous operation.</para>
+        /// <para>The Result property on the task object returns the lists.</para>
+        /// </returns>
+        public Task<Cursored<List>> SubscriptionsAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return this.Tokens.AccessApiAsync<Cursored<List>, T>(HttpMethod.Get, "lists/subscriptions", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -364,7 +364,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<Status>> StatusesAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiArrayAsync<Status>(MethodType.Get, "lists/statuses", parameters);
+            return this.Tokens.AccessApiArrayAsync<Status>(HttpMethod.Get, "lists/statuses", parameters);
         }
 
         /// <summary>
@@ -392,7 +392,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<Status>> StatusesAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<Status>(MethodType.Get, "lists/statuses", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<Status>(HttpMethod.Get, "lists/statuses", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -420,7 +420,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<Status>> StatusesAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<Status, T>(MethodType.Get, "lists/statuses", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<Status, T>(HttpMethod.Get, "lists/statuses", parameters, cancellationToken);
         }
 
         // POST Methods
@@ -440,7 +440,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> CreateAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/create", parameters);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/create", parameters);
         }
 
         /// <summary>
@@ -459,7 +459,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> CreateAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/create", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/create", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -478,7 +478,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> CreateAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse, T>(MethodType.Post, "lists/create", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse, T>(HttpMethod.Post, "lists/create", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -495,7 +495,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> DestroyAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/destroy", parameters);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/destroy", parameters);
         }
 
         /// <summary>
@@ -513,7 +513,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> DestroyAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/destroy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/destroy", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -531,7 +531,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> DestroyAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse, T>(MethodType.Post, "lists/destroy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse, T>(HttpMethod.Post, "lists/destroy", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -555,7 +555,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> UpdateAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/update", parameters);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/update", parameters);
         }
 
         /// <summary>
@@ -580,7 +580,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> UpdateAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/update", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/update", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -605,7 +605,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> UpdateAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse, T>(MethodType.Post, "lists/update", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse, T>(HttpMethod.Post, "lists/update", parameters, cancellationToken);
         }
     }
 
@@ -633,7 +633,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<User>> ListAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<Cursored<User>>(MethodType.Get, "lists/members", parameters);
+            return this.Tokens.AccessApiAsync<Cursored<User>>(HttpMethod.Get, "lists/members", parameters);
         }
 
         /// <summary>
@@ -657,7 +657,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<User>> ListAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<User>>(MethodType.Get, "lists/members", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<User>>(HttpMethod.Get, "lists/members", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -681,7 +681,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Cursored<User>> ListAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Cursored<User>, T>(MethodType.Get, "lists/members", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Cursored<User>, T>(HttpMethod.Get, "lists/members", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -703,7 +703,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> ShowAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Get, "lists/members/show", parameters);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Get, "lists/members/show", parameters);
         }
 
         /// <summary>
@@ -726,7 +726,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> ShowAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Get, "lists/members/show", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Get, "lists/members/show", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -749,7 +749,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> ShowAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse, T>(MethodType.Get, "lists/members/show", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse, T>(HttpMethod.Get, "lists/members/show", parameters, cancellationToken);
         }
 
         //POST Methods
@@ -775,7 +775,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> CreateAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/members/create", parameters);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/members/create", parameters);
         }
 
         /// <summary>
@@ -800,7 +800,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> CreateAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/members/create", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/members/create", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -825,7 +825,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> CreateAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse, T>(MethodType.Post, "lists/members/create", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse, T>(HttpMethod.Post, "lists/members/create", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -851,7 +851,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> CreateAllAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/members/create_all", parameters);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/members/create_all", parameters);
         }
 
         /// <summary>
@@ -878,7 +878,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> CreateAllAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/members/create_all", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/members/create_all", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -905,7 +905,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> CreateAllAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse, T>(MethodType.Post, "lists/members/create_all", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse, T>(HttpMethod.Post, "lists/members/create_all", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -928,7 +928,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> DestroyAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/members/destroy", parameters);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/members/destroy", parameters);
         }
 
         /// <summary>
@@ -952,7 +952,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> DestroyAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/members/destroy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/members/destroy", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -976,7 +976,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> DestroyAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse, T>(MethodType.Post, "lists/members/destroy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse, T>(HttpMethod.Post, "lists/members/destroy", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -1002,7 +1002,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> DestroyAllAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/members/destroy_all", parameters);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/members/destroy_all", parameters);
         }
 
         /// <summary>
@@ -1029,7 +1029,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> DestroyAllAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/members/destroy_all", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/members/destroy_all", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -1056,7 +1056,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> DestroyAllAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse, T>(MethodType.Post, "lists/members/destroy_all", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse, T>(HttpMethod.Post, "lists/members/destroy_all", parameters, cancellationToken);
         }
     }
 
@@ -1086,7 +1086,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> ShowAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Get, "lists/subscribers/show", parameters);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Get, "lists/subscribers/show", parameters);
         }
 
         /// <summary>
@@ -1112,7 +1112,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> ShowAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Get, "lists/subscribers/show", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Get, "lists/subscribers/show", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -1138,7 +1138,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> ShowAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse, T>(MethodType.Get, "lists/subscribers/show", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse, T>(HttpMethod.Get, "lists/subscribers/show", parameters, cancellationToken);
         }
 
         //POST Methods
@@ -1160,7 +1160,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> CreateAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/subscribers/create", parameters);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/subscribers/create", parameters);
         }
 
         /// <summary>
@@ -1181,7 +1181,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> CreateAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/subscribers/create", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/subscribers/create", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -1202,7 +1202,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> CreateAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse, T>(MethodType.Post, "lists/subscribers/create", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse, T>(HttpMethod.Post, "lists/subscribers/create", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -1222,7 +1222,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> DestroyAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/subscribers/destroy", parameters);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/subscribers/destroy", parameters);
         }
 
         /// <summary>
@@ -1243,7 +1243,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> DestroyAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse>(MethodType.Post, "lists/subscribers/destroy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse>(HttpMethod.Post, "lists/subscribers/destroy", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -1264,7 +1264,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListResponse> DestroyAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<ListResponse, T>(MethodType.Post, "lists/subscribers/destroy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<ListResponse, T>(HttpMethod.Post, "lists/subscribers/destroy", parameters, cancellationToken);
         }
     }
 }

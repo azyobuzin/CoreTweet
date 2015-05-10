@@ -22,10 +22,10 @@
 // THE SOFTWARE.
 
 using System;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 using Newtonsoft.Json;
 
-namespace CoreTweet
+namespace LibAzyotter
 {
     /// <summary>
     /// Represents a saved search query used in the Twitter Search API.

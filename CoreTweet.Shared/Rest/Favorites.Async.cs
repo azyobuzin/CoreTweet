@@ -25,11 +25,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreTweet.Core;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     partial class Favorites
     {
@@ -52,7 +52,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<Status>> ListAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiArrayAsync<Status>(MethodType.Get, "favorites/list", parameters);
+            return this.Tokens.AccessApiArrayAsync<Status>(HttpMethod.Get, "favorites/list", parameters);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<Status>> ListAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<Status>(MethodType.Get, "favorites/list", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<Status>(HttpMethod.Get, "favorites/list", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<Status>> ListAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<Status, T>(MethodType.Get, "favorites/list", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<Status, T>(HttpMethod.Get, "favorites/list", parameters, cancellationToken);
         }
 
         //POST Methods
@@ -113,7 +113,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<StatusResponse> CreateAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<StatusResponse>(MethodType.Post, "favorites/create", parameters);
+            return this.Tokens.AccessApiAsync<StatusResponse>(HttpMethod.Post, "favorites/create", parameters);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<StatusResponse> CreateAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<StatusResponse>(MethodType.Post, "favorites/create", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<StatusResponse>(HttpMethod.Post, "favorites/create", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<StatusResponse> CreateAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<StatusResponse, T>(MethodType.Post, "favorites/create", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<StatusResponse, T>(HttpMethod.Post, "favorites/create", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<StatusResponse> DestroyAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<StatusResponse>(MethodType.Post, "favorites/destroy", parameters);
+            return this.Tokens.AccessApiAsync<StatusResponse>(HttpMethod.Post, "favorites/destroy", parameters);
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<StatusResponse> DestroyAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<StatusResponse>(MethodType.Post, "favorites/destroy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<StatusResponse>(HttpMethod.Post, "favorites/destroy", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<StatusResponse> DestroyAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<StatusResponse, T>(MethodType.Post, "favorites/destroy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<StatusResponse, T>(HttpMethod.Post, "favorites/destroy", parameters, cancellationToken);
         }
     }
 }

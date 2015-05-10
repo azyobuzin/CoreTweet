@@ -21,10 +21,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 using Newtonsoft.Json;
 
-namespace CoreTweet
+namespace LibAzyotter
 {
     /// <summary>
     /// Represents the error response from Twitter.

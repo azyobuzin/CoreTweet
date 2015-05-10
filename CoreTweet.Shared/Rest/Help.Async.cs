@@ -25,11 +25,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreTweet.Core;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     partial class Help
     {
@@ -47,7 +47,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Configurations> ConfigurationAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<Configurations>(MethodType.Get, "help/configuration", parameters);
+            return this.Tokens.AccessApiAsync<Configurations>(HttpMethod.Get, "help/configuration", parameters);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Configurations> ConfigurationAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Configurations>(MethodType.Get, "help/configuration", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Configurations>(HttpMethod.Get, "help/configuration", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Configurations> ConfigurationAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Configurations, T>(MethodType.Get, "help/configuration", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Configurations, T>(HttpMethod.Get, "help/configuration", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<Language>> LanguagesAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiArrayAsync<Language>(MethodType.Get, "help/languages", parameters);
+            return this.Tokens.AccessApiArrayAsync<Language>(HttpMethod.Get, "help/languages", parameters);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<Language>> LanguagesAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<Language>(MethodType.Get, "help/languages", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<Language>(HttpMethod.Get, "help/languages", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<Language>> LanguagesAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<Language, T>(MethodType.Get, "help/languages", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<Language, T>(HttpMethod.Get, "help/languages", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<StringResponse> PrivacyAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<StringResponse>(MethodType.Get, "help/privacy", parameters);
+            return this.Tokens.AccessApiAsync<StringResponse>(HttpMethod.Get, "help/privacy", parameters);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<StringResponse> PrivacyAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<StringResponse>(MethodType.Get, "help/privacy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<StringResponse>(HttpMethod.Get, "help/privacy", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<StringResponse> PrivacyAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<StringResponse, T>(MethodType.Get, "help/privacy", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<StringResponse, T>(HttpMethod.Get, "help/privacy", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<StringResponse> TosAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<StringResponse>(MethodType.Get, "help/tos", parameters);
+            return this.Tokens.AccessApiAsync<StringResponse>(HttpMethod.Get, "help/tos", parameters);
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<StringResponse> TosAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<StringResponse>(MethodType.Get, "help/tos", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<StringResponse>(HttpMethod.Get, "help/tos", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<StringResponse> TosAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<StringResponse, T>(MethodType.Get, "help/tos", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<StringResponse, T>(HttpMethod.Get, "help/tos", parameters, cancellationToken);
         }
 
         /// <summary>

@@ -32,7 +32,7 @@ using Windows.Security.Cryptography.Core;
 using System.Security.Cryptography;
 #endif
 
-namespace CoreTweet.Core
+namespace LibAzyotter.Internal
 {
     internal static class SecurityUtils
     {

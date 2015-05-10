@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CoreTweet.Core
+namespace LibAzyotter
 {
     /// <summary>
     /// Represents a response that has rate limit.
@@ -29,7 +29,7 @@ namespace CoreTweet.Core
 #endif
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoreTweet.Core.ListedResponse&lt;T&gt;"/> class with a specified collection.
+        /// Initializes a new instance of the <see cref="ListedResponse&lt;T&gt;"/> class with a specified collection.
         /// </summary>
         /// <param name="collection">The collection whose elements are copied to the new <see cref="ListedResponse&lt;T&gt;"/>.</param>
         public ListedResponse(List<T> collection)
@@ -38,7 +38,7 @@ namespace CoreTweet.Core
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoreTweet.Core.ListedResponse&lt;T&gt;"/> class with a specified collection and rate limit.
+        /// Initializes a new instance of the <see cref="ListedResponse&lt;T&gt;"/> class with a specified collection and rate limit.
         /// </summary>
         /// <param name="collection">The collection whose elements are copied to the new <see cref="ListedResponse&lt;T&gt;"/>.</param>
         /// <param name="rateLimit">The rate limit.</param>
@@ -112,16 +112,16 @@ namespace CoreTweet.Core
 #endif
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoreTweet.Core.DictionaryResponse&lt;TKey, TValue&gt;"/> class with a specified dictionary.
+        /// Initializes a new instance of the <see cref="DictionaryResponse&lt;TKey, TValue&gt;"/> class with a specified dictionary.
         /// </summary>
-        /// <param name="dictionary">The dictionary whose elements are copied to the new <see cref="CoreTweet.Core.DictionaryResponse&lt;TKey, TValue&gt;"/>.</param>
+        /// <param name="dictionary">The dictionary whose elements are copied to the new <see cref="DictionaryResponse&lt;TKey, TValue&gt;"/>.</param>
         public DictionaryResponse(Dictionary<TKey, TValue> dictionary)
         {
             this.innerDictionary = dictionary;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoreTweet.Core.DictionaryResponse&lt;TKey, TValue&gt;"/> class with a specified dictionary and rate limit.
+        /// Initializes a new instance of the <see cref="DictionaryResponse&lt;TKey, TValue&gt;"/> class with a specified dictionary and rate limit.
         /// </summary>
         /// <param name="dictionary">The dictionary whose elements are copied to the new <see cref="CoreTweet.Core.DictionaryResponse&lt;TKey, TValue&gt;"/>.</param>
         /// <param name="rateLimit">The rate limit.</param>
@@ -175,7 +175,7 @@ namespace CoreTweet.Core
         /// When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter.
         /// This parameter is passed uninitialized.
         /// </param>
-        /// <returns><c>true</c> if the <see cref="CoreTweet.Core.DictionaryResponse&lt;TKey, TValue&gt;"/> contains an element that has the specified key; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the <see cref="DictionaryResponse&lt;TKey, TValue&gt;"/> contains an element that has the specified key; otherwise, <c>false</c>.</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
             return this.innerDictionary.TryGetValue(key, out value);

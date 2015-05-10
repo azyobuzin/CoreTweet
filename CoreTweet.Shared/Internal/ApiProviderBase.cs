@@ -20,24 +20,20 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
 
-namespace CoreTweet.Core
+using LibAzyotter;
+
+namespace LibAzyotter.Internal
 {
     /// <summary>
     /// Provides a Twitter API wrapper. This is an abstract class.
     /// </summary>
     public abstract class ApiProviderBase
     {
-        /// <summary>
-        /// Gets or sets the OAuth tokens.
-        /// </summary>
-        protected internal TokensBase Tokens { get; set; }
-
-        /// <summary>
-        /// Gets the tokens being used in this instance.
-        /// </summary>
-        public TokensBase IncludedTokens
+        // 本流からのマージ用に名前を変えないでおく
+        protected internal TwitterClient Tokens { get; set; }
+        
+        public TwitterClient Client
         {
             get
             {
@@ -45,9 +41,9 @@ namespace CoreTweet.Core
             }
         }
 
-        internal ApiProviderBase(TokensBase tokens)
+        internal ApiProviderBase(TwitterClient client)
         {
-            Tokens = tokens;
+            Tokens = client;
         }
     }
 }

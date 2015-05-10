@@ -25,11 +25,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreTweet.Core;
+using LibAzyotter.Connection;
+using LibAzyotter.Internal;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     partial class Media
     {
@@ -37,12 +39,11 @@ namespace CoreTweet.Rest
 
         private Task<MediaUploadResult> UploadAsyncImpl(IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
-            return this.Tokens.SendRequestAsyncImpl(MethodType.Post, InternalUtils.GetUrl(Tokens.ConnectionOptions, Tokens.ConnectionOptions.UploadUrl, true, "media/upload.json"), parameters, cancellationToken)
-                .ContinueWith(
-                    t => InternalUtils.ReadResponse(t, s => CoreBase.Convert<MediaUploadResult>(s), cancellationToken),
-                    cancellationToken
-                )
-                .Unwrap();
+            return this.Client.AccessApiAsyncImpl(
+                HttpMethod.Post, ApiHost.Upload, TwitterClient.ApiVersion,
+                new Uri("media/upload.json"), parameters, null, cancellationToken,
+                s => CoreBase.Convert<MediaUploadResult>(s)
+            );
         }
 
         /// <summary>

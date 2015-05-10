@@ -24,16 +24,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     /// <summary>
     /// Provides a set of methods for the wrapper of GET/POST lists.
     /// </summary>
     public partial class Lists : ApiProviderBase
     {
-        internal Lists(TokensBase e) : base(e) { }
+        internal Lists(TwitterClient e) : base(e) { }
 
         /// <summary>
         /// Gets the wrapper of lists/members
@@ -684,7 +684,7 @@ namespace CoreTweet.Rest
     /// </summary>
     public partial class Members : ApiProviderBase
     {
-        internal Members(TokensBase tokens) : base(tokens) { }
+        internal Members(TwitterClient tokens) : base(tokens) { }
 
 #if false
         //GET Methods
@@ -1139,7 +1139,7 @@ namespace CoreTweet.Rest
     /// </summary>
     public partial class Subscribers : ApiProviderBase
     {
-        internal Subscribers(TokensBase tokens) : base(tokens) { }
+        internal Subscribers(TwitterClient tokens) : base(tokens) { }
 
 #if false
         //GET Method

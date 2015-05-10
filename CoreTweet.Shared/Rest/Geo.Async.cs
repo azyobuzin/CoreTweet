@@ -25,11 +25,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     partial class Geo
     {
@@ -47,7 +48,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<PlaceResponse> IdAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessParameterReservedApiAsync<PlaceResponse>(MethodType.Get, "geo/id/{place_id}", "place_id", InternalUtils.ExpressionsToDictionary(parameters), CancellationToken.None);
+            return this.Tokens.AccessParameterReservedApiAsync<PlaceResponse>(HttpMethod.Get, "geo/id/{place_id}", "place_id", InternalUtils.ExpressionsToDictionary(parameters), CancellationToken.None);
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<PlaceResponse> IdAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessParameterReservedApiAsync<PlaceResponse>(MethodType.Get, "geo/id/{place_id}", "place_id", parameters, cancellationToken);
+            return this.Tokens.AccessParameterReservedApiAsync<PlaceResponse>(HttpMethod.Get, "geo/id/{place_id}", "place_id", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<PlaceResponse> IdAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessParameterReservedApiAsync<PlaceResponse>(MethodType.Get, "geo/id/{place_id}", "place_id", InternalUtils.ResolveObject(parameters), cancellationToken);
+            return this.Tokens.AccessParameterReservedApiAsync<PlaceResponse>(HttpMethod.Get, "geo/id/{place_id}", "place_id", InternalUtils.ResolveObject(parameters), cancellationToken);
         }
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<GeoResult> SimilarPlacesAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<GeoResult>(MethodType.Get, "geo/similar_places", parameters, "result");
+            return this.Tokens.AccessApiAsync<GeoResult>(HttpMethod.Get, "geo/similar_places", parameters, "result");
         }
 
         /// <summary>
@@ -122,7 +123,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<GeoResult> SimilarPlacesAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<GeoResult>(MethodType.Get, "geo/similar_places", parameters, cancellationToken, "result");
+            return this.Tokens.AccessApiAsync<GeoResult>(HttpMethod.Get, "geo/similar_places", parameters, cancellationToken, "result");
         }
 
         /// <summary>
@@ -144,7 +145,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<GeoResult> SimilarPlacesAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<GeoResult, T>(MethodType.Get, "geo/similar_places", parameters, cancellationToken, "result");
+            return this.Tokens.AccessApiAsync<GeoResult, T>(HttpMethod.Get, "geo/similar_places", parameters, cancellationToken, "result");
         }
 
         /// <summary>
@@ -173,7 +174,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<GeoResult> SearchAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<GeoResult>(MethodType.Get, "geo/search", parameters, "result");
+            return this.Tokens.AccessApiAsync<GeoResult>(HttpMethod.Get, "geo/search", parameters, "result");
         }
 
         /// <summary>
@@ -203,7 +204,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<GeoResult> SearchAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<GeoResult>(MethodType.Get, "geo/search", parameters, cancellationToken, "result");
+            return this.Tokens.AccessApiAsync<GeoResult>(HttpMethod.Get, "geo/search", parameters, cancellationToken, "result");
         }
 
         /// <summary>
@@ -233,7 +234,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<GeoResult> SearchAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<GeoResult, T>(MethodType.Get, "geo/search", parameters, cancellationToken, "result");
+            return this.Tokens.AccessApiAsync<GeoResult, T>(HttpMethod.Get, "geo/search", parameters, cancellationToken, "result");
         }
 
         /// <summary>
@@ -253,7 +254,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<GeoResult> ReverseGeocodeAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<GeoResult>(MethodType.Get, "geo/reverse_geocode", parameters, "result");
+            return this.Tokens.AccessApiAsync<GeoResult>(HttpMethod.Get, "geo/reverse_geocode", parameters, "result");
         }
 
         /// <summary>
@@ -274,7 +275,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<GeoResult> ReverseGeocodeAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<GeoResult>(MethodType.Get, "geo/reverse_geocode", parameters, cancellationToken, "result");
+            return this.Tokens.AccessApiAsync<GeoResult>(HttpMethod.Get, "geo/reverse_geocode", parameters, cancellationToken, "result");
         }
 
         /// <summary>
@@ -295,7 +296,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<GeoResult> ReverseGeocodeAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<GeoResult, T>(MethodType.Get, "geo/reverse_geocode", parameters, cancellationToken, "result");
+            return this.Tokens.AccessApiAsync<GeoResult, T>(HttpMethod.Get, "geo/reverse_geocode", parameters, cancellationToken, "result");
         }
     }
 }

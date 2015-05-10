@@ -24,16 +24,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     /// <summary>
     /// Provides a set of methods for the wrapper of GET/POST mutes.
     /// </summary>
     public class Mutes : ApiProviderBase
     {
-        internal Mutes(TokensBase e) : base(e) { }
+        internal Mutes(TwitterClient e) : base(e) { }
 
         /// <summary>
         /// Gets the wrapper of mutes/users.
@@ -46,7 +46,7 @@ namespace CoreTweet.Rest
     /// </summary>
     public partial class MutesUsers : ApiProviderBase
     {
-        internal MutesUsers(TokensBase e) : base(e) { }
+        internal MutesUsers(TwitterClient e) : base(e) { }
 
 #if false
         //GET Methods

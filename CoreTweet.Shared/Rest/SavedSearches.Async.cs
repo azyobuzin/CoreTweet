@@ -25,11 +25,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     partial class SavedSearches
     {
@@ -46,7 +47,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<SearchQuery>> ListAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiArrayAsync<SearchQuery>(MethodType.Get, "saved_searches/list", parameters);
+            return this.Tokens.AccessApiArrayAsync<SearchQuery>(HttpMethod.Get, "saved_searches/list", parameters);
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<SearchQuery>> ListAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<SearchQuery>(MethodType.Get, "saved_searches/list", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<SearchQuery>(HttpMethod.Get, "saved_searches/list", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<SearchQuery>> ListAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<SearchQuery, T>(MethodType.Get, "saved_searches/list", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<SearchQuery, T>(HttpMethod.Get, "saved_searches/list", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -92,7 +93,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<SearchQueryResponse> ShowAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessParameterReservedApiAsync<SearchQueryResponse>(MethodType.Get, "saved_searches/show/{id}", "id", InternalUtils.ExpressionsToDictionary(parameters), CancellationToken.None);
+            return this.Tokens.AccessParameterReservedApiAsync<SearchQueryResponse>(HttpMethod.Get, "saved_searches/show/{id}", "id", InternalUtils.ExpressionsToDictionary(parameters), CancellationToken.None);
         }
 
         /// <summary>
@@ -109,7 +110,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<SearchQueryResponse> ShowAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessParameterReservedApiAsync<SearchQueryResponse>(MethodType.Get, "saved_searches/show/{id}", "id", parameters, cancellationToken);
+            return this.Tokens.AccessParameterReservedApiAsync<SearchQueryResponse>(HttpMethod.Get, "saved_searches/show/{id}", "id", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -126,7 +127,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<SearchQueryResponse> ShowAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessParameterReservedApiAsync<SearchQueryResponse>(MethodType.Get, "saved_searches/show/{id}", "id", InternalUtils.ResolveObject(parameters), cancellationToken);
+            return this.Tokens.AccessParameterReservedApiAsync<SearchQueryResponse>(HttpMethod.Get, "saved_searches/show/{id}", "id", InternalUtils.ResolveObject(parameters), cancellationToken);
         }
 
         //POST Methods
@@ -144,7 +145,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<SearchQueryResponse> CreateAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<SearchQueryResponse>(MethodType.Post, "saved_searches/create", parameters);
+            return this.Tokens.AccessApiAsync<SearchQueryResponse>(HttpMethod.Post, "saved_searches/create", parameters);
         }
 
         /// <summary>
@@ -161,7 +162,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<SearchQueryResponse> CreateAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<SearchQueryResponse>(MethodType.Post, "saved_searches/create", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<SearchQueryResponse>(HttpMethod.Post, "saved_searches/create", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -178,7 +179,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<SearchQueryResponse> CreateAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<SearchQueryResponse, T>(MethodType.Post, "saved_searches/create", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<SearchQueryResponse, T>(HttpMethod.Post, "saved_searches/create", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -194,7 +195,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<SearchQueryResponse> DestroyAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessParameterReservedApiAsync<SearchQueryResponse>(MethodType.Post, "saved_searches/destroy/{id}", "id", InternalUtils.ExpressionsToDictionary(parameters), CancellationToken.None);
+            return this.Tokens.AccessParameterReservedApiAsync<SearchQueryResponse>(HttpMethod.Post, "saved_searches/destroy/{id}", "id", InternalUtils.ExpressionsToDictionary(parameters), CancellationToken.None);
         }
 
         /// <summary>
@@ -211,7 +212,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<SearchQueryResponse> DestroyAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessParameterReservedApiAsync<SearchQueryResponse>(MethodType.Post, "saved_searches/destroy/{id}", "id", parameters, cancellationToken);
+            return this.Tokens.AccessParameterReservedApiAsync<SearchQueryResponse>(HttpMethod.Post, "saved_searches/destroy/{id}", "id", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -228,7 +229,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<SearchQueryResponse> DestroyAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessParameterReservedApiAsync<SearchQueryResponse>(MethodType.Post, "saved_searches/destroy/{id}", "id", InternalUtils.ResolveObject(parameters), cancellationToken);
+            return this.Tokens.AccessParameterReservedApiAsync<SearchQueryResponse>(HttpMethod.Post, "saved_searches/destroy/{id}", "id", InternalUtils.ResolveObject(parameters), cancellationToken);
         }
     }
 }

@@ -25,16 +25,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     /// <summary>
     /// Provides a set of methods for the wrapper of POST media.
     /// </summary>
     public partial class Media : ApiProviderBase
     {
-        internal Media(TokensBase e) : base(e) { }
+        internal Media(TwitterClient e) : base(e) { }
 
 #if false
         //POST methods

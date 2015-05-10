@@ -25,16 +25,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     /// <summary>
     /// Provides a set of methods for the wrapper of GET/POST account.
     /// </summary>
     public partial class Account : ApiProviderBase
     {
-        internal Account(TokensBase e) : base(e) { }
+        internal Account(TwitterClient e) : base(e) { }
 
 #if false
         //GET Methods

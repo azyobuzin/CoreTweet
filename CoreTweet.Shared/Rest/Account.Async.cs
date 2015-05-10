@@ -26,11 +26,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     partial class Account
     {
@@ -50,7 +51,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> VerifyCredentialsAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Get, "account/verify_credentials", parameters);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Get, "account/verify_credentials", parameters);
         }
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> VerifyCredentialsAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Get, "account/verify_credentials", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Get, "account/verify_credentials", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> VerifyCredentialsAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse, T>(MethodType.Get, "account/verify_credentials", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse, T>(HttpMethod.Get, "account/verify_credentials", parameters, cancellationToken);
         }
 
         //GET & POST Methods
@@ -108,7 +109,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Setting> SettingsAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<Setting>(parameters.Length == 0 ? MethodType.Get : MethodType.Post, "account/settings", parameters);
+            return this.Tokens.AccessApiAsync<Setting>(parameters.Length == 0 ? HttpMethod.Get : HttpMethod.Post, "account/settings", parameters);
         }
 
         /// <summary>
@@ -129,7 +130,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<Setting> SettingsAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<Setting>(parameters.Count == 0 ? MethodType.Get : MethodType.Post, "account/settings", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<Setting>(parameters.Count == 0 ? HttpMethod.Get : HttpMethod.Post, "account/settings", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -151,7 +152,7 @@ namespace CoreTweet.Rest
         public Task<Setting> SettingsAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
             var param = InternalUtils.ResolveObject(parameters);
-            return this.Tokens.AccessApiAsyncImpl<Setting>(param.Any() ? MethodType.Post : MethodType.Get, "account/settings", param, cancellationToken, "");
+            return this.Tokens.AccessApiAsyncImpl<Setting>(param.Any() ? HttpMethod.Post : HttpMethod.Get, "account/settings", param, cancellationToken, "");
         }
 
 
@@ -219,7 +220,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> UpdateProfileAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Post, "account/update_profile", parameters);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Post, "account/update_profile", parameters);
         }
 
         /// <summary>
@@ -241,7 +242,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> UpdateProfileAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Post, "account/update_profile", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Post, "account/update_profile", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -263,7 +264,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> UpdateProfileAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse, T>(MethodType.Post, "account/update_profile", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse, T>(HttpMethod.Post, "account/update_profile", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -284,7 +285,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> UpdateProfileBackgroundImageAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Post, "account/update_profile_background_image", parameters);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Post, "account/update_profile_background_image", parameters);
         }
 
         /// <summary>
@@ -306,7 +307,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> UpdateProfileBackgroundImageAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Post, "account/update_profile_background_image", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Post, "account/update_profile_background_image", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -328,7 +329,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> UpdateProfileBackgroundImageAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse, T>(MethodType.Post, "account/update_profile_background_image", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse, T>(HttpMethod.Post, "account/update_profile_background_image", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -447,7 +448,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> UpdateProfileColorsAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Post, "account/update_profile_colors", parameters);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Post, "account/update_profile_colors", parameters);
         }
 
         /// <summary>
@@ -470,7 +471,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> UpdateProfileColorsAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Post, "account/update_profile_colors", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Post, "account/update_profile_colors", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -493,7 +494,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> UpdateProfileColorsAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse, T>(MethodType.Post, "account/update_profile_colors", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse, T>(HttpMethod.Post, "account/update_profile_colors", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -513,7 +514,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> UpdateProfileImageAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Post, "account/update_profile_image", parameters);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Post, "account/update_profile_image", parameters);
         }
 
         /// <summary>
@@ -534,7 +535,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> UpdateProfileImageAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse>(MethodType.Post, "account/update_profile_image", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse>(HttpMethod.Post, "account/update_profile_image", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -555,7 +556,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<UserResponse> UpdateProfileImageAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<UserResponse, T>(MethodType.Post, "account/update_profile_image", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<UserResponse, T>(HttpMethod.Post, "account/update_profile_image", parameters, cancellationToken);
         }
     }
 }

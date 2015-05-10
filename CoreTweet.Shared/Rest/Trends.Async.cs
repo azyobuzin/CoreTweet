@@ -25,11 +25,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreTweet.Core;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     partial class Trends
     {
@@ -49,7 +49,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<TrendLocation>> AvailableAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiArrayAsync<TrendLocation>(MethodType.Get, "trends/available", parameters);
+            return this.Tokens.AccessApiArrayAsync<TrendLocation>(HttpMethod.Get, "trends/available", parameters);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<TrendLocation>> AvailableAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<TrendLocation>(MethodType.Get, "trends/available", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<TrendLocation>(HttpMethod.Get, "trends/available", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<TrendLocation>> AvailableAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<TrendLocation, T>(MethodType.Get, "trends/available", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<TrendLocation, T>(HttpMethod.Get, "trends/available", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<TrendLocation>> ClosestAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiArrayAsync<TrendLocation>(MethodType.Get, "trends/closest", parameters);
+            return this.Tokens.AccessApiArrayAsync<TrendLocation>(HttpMethod.Get, "trends/closest", parameters);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<TrendLocation>> ClosestAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<TrendLocation>(MethodType.Get, "trends/closest", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<TrendLocation>(HttpMethod.Get, "trends/closest", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<TrendLocation>> ClosestAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<TrendLocation, T>(MethodType.Get, "trends/closest", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<TrendLocation, T>(HttpMethod.Get, "trends/closest", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<TrendsResult>> PlaceAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiArrayAsync<TrendsResult>(MethodType.Get, "trends/place", parameters);
+            return this.Tokens.AccessApiArrayAsync<TrendsResult>(HttpMethod.Get, "trends/place", parameters);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<TrendsResult>> PlaceAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<TrendsResult>(MethodType.Get, "trends/place", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<TrendsResult>(HttpMethod.Get, "trends/place", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<ListedResponse<TrendsResult>> PlaceAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiArrayAsync<TrendsResult, T>(MethodType.Get, "trends/place", parameters, cancellationToken);
+            return this.Tokens.AccessApiArrayAsync<TrendsResult, T>(HttpMethod.Get, "trends/place", parameters, cancellationToken);
         }
     }
 }

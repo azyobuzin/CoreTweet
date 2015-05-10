@@ -25,10 +25,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 using Newtonsoft.Json;
 
-namespace CoreTweet
+namespace LibAzyotter
 {
     /// <summary>
     /// Represents a cursored message object.
@@ -119,7 +119,7 @@ namespace CoreTweet
             return Result.GetEnumerator();
         }
 
-#if !(PCL || WIN_RT || WP)
+#if false
         internal static IEnumerable<T> Enumerate(TokensBase tokens, string apiName, EnumerateMode mode, params Expression<Func<string,object>>[] parameters)
         {
             var p = InternalUtils.ExpressionsToDictionary(parameters);

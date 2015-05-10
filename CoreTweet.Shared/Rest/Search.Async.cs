@@ -25,11 +25,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreTweet.Core;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     partial class Search
     {
@@ -58,7 +58,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<SearchResult> TweetsAsync(params Expression<Func<string, object>>[] parameters)
         {
-            return this.Tokens.AccessApiAsync<SearchResult>(MethodType.Get, "search/tweets", parameters);
+            return this.Tokens.AccessApiAsync<SearchResult>(HttpMethod.Get, "search/tweets", parameters);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<SearchResult> TweetsAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<SearchResult>(MethodType.Get, "search/tweets", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<SearchResult>(HttpMethod.Get, "search/tweets", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace CoreTweet.Rest
         /// </returns>
         public Task<SearchResult> TweetsAsync<T>(T parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.Tokens.AccessApiAsync<SearchResult, T>(MethodType.Get, "search/tweets", parameters, cancellationToken);
+            return this.Tokens.AccessApiAsync<SearchResult, T>(HttpMethod.Get, "search/tweets", parameters, cancellationToken);
         }
     }
 }

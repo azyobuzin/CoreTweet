@@ -24,16 +24,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     /// <summary>
     /// Provides a set of methods for the wrapper of GET/POST saved_searches.
     /// </summary>
     public partial class SavedSearches : ApiProviderBase
     {
-        internal SavedSearches(TokensBase e) : base(e) { }
+        internal SavedSearches(TwitterClient e) : base(e) { }
 
 #if false
         //GET Methods

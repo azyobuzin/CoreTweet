@@ -26,8 +26,9 @@ using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using LibAzyotter.Api;
 
-namespace CoreTweet.Streaming.Reactive
+namespace LibAzyotter
 {
     /// <summary>
     /// Extensions for Reactive Extension(Rx).
@@ -48,15 +49,7 @@ namespace CoreTweet.Streaming.Reactive
 
             return Observable.Create<StreamingMessage>((observer, cancel) =>
             {
-                return e.IncludedTokens.SendStreamingRequestAsync(e.GetMethodType(type), e.GetUrl(type), parameters.Parameters, cancel)
-                    .ContinueWith(task =>
-                    {
-                        if(task.IsFaulted)
-                            task.Exception.InnerException.Rethrow();
-
-                        return task.Result.GetResponseStreamAsync();
-                    }, cancel)
-                    .Unwrap()
+                return e.GetStreamAsync(type, parameters, cancel)
                     .ContinueWith(task =>
                     {
                         if(task.IsFaulted)

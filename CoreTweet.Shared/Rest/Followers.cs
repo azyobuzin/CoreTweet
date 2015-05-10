@@ -24,16 +24,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     /// <summary>
     /// Provides a set of methods for the wrapper of GET followers.
     /// </summary>
     public partial class Followers : ApiProviderBase
     {
-        internal Followers(TokensBase e) : base(e) { }
+        internal Followers(TwitterClient e) : base(e) { }
 
 #if false
         //GET Methods

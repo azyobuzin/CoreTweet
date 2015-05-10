@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
-namespace CoreTweet.Core
+namespace LibAzyotter.Internal
 {
     /// <summary>
     /// Represents a Twitter object. This is an <c>abstract</c> class.

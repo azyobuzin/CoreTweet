@@ -24,16 +24,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     /// <summary>
     /// Provides a set of methods for the wrapper of GET/POST geo.
     /// </summary>
     public partial class Geo : ApiProviderBase
     {
-        internal Geo(TokensBase e) : base(e) { }
+        internal Geo(TwitterClient e) : base(e) { }
         //FIXME: The format of "attribute:street_address" isn't known. Needed to check the format by "OAuth tool".
 
 #if false

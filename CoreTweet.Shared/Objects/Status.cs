@@ -22,11 +22,11 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace CoreTweet
+namespace LibAzyotter
 {
     /// <summary>
     /// <para>Represents the Tweets, which are the basic atomic building block of all things Twitter.</para>

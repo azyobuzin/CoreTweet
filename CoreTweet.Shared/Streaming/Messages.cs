@@ -22,11 +22,11 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace CoreTweet.Streaming
+namespace LibAzyotter
 {
     /// <summary>
     /// Provides disconnect codes in Twitter Streaming API.
@@ -822,7 +822,7 @@ namespace CoreTweet.Streaming
         /// <summary>
         /// Gets or sets the target List.
         /// </summary>
-        public CoreTweet.List TargetList { get; set; }
+        public List TargetList { get; set; }
 
         /// <summary>
         /// Gets or sets the target access token.
@@ -870,7 +870,7 @@ namespace CoreTweet.Streaming
                     e.TargetStatus = j["target_object"].ToObject<Status>();
                     break;
                 case EventTargetType.List:
-                    e.TargetList = j["target_object"].ToObject<CoreTweet.List>();
+                    e.TargetList = j["target_object"].ToObject<List>();
                     break;
                 case EventTargetType.AccessRevocation:
                     e.TargetToken = j["target_object"].ToObject<AccessRevocation>();

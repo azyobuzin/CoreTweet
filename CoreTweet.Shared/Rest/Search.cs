@@ -24,16 +24,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using CoreTweet.Core;
+using LibAzyotter.Internal;
 
-namespace CoreTweet.Rest
+namespace LibAzyotter.Api
 {
     /// <summary>
     /// Provides a set of methods for the wrapper of GET search.
     /// </summary>
     public partial class Search : ApiProviderBase
     {
-        internal Search(TokensBase e) : base(e) { }
+        internal Search(TwitterClient e) : base(e) { }
 
 #if false
         //GET Method

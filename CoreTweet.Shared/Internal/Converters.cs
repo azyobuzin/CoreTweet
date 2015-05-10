@@ -23,7 +23,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace CoreTweet.Core
+namespace LibAzyotter.Internal
 {
     /// <summary>
     /// Provides the <see cref="System.Uri"/> converter of the <see cref="Newtonsoft.Json.JsonSerializer"/>.

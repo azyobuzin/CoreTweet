@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
-#if NET45
+#if !(PCL || WIN_RT)
 using System.Net.Security;
 #endif
 
@@ -16,7 +17,7 @@ namespace LibAzyotter.Connection
         public TwitterConnection(IRequestBuilder requestBuilder)
         {
             if (requestBuilder == null)
-                throw new ArgumentNullException("requestBuilder");
+                throw new ArgumentNullException(nameof(requestBuilder));
             this.requestBuilder = requestBuilder;
         }
 
@@ -36,8 +37,11 @@ namespace LibAzyotter.Connection
         }
 
         public TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds(100);
+        public IWebProxy Proxy { get; set; }
+        public bool UseProxy { get; set; } = true;
+        public ProductInfoHeaderValue UserAgent { get; set; } = new ProductInfoHeaderValue("LibAzyotter", "0.0");
 
-#if NET45
+#if !(PCL || WIN_RT)
         public int ReadWriteTimeout { get; set; } = 300000;
         public RemoteCertificateValidationCallback ServerCertificateValidationCallback { get; set; }
 #endif
@@ -45,15 +49,20 @@ namespace LibAzyotter.Connection
         public virtual async Task<HttpResponseMessage> SendRequestAsync(HttpMethod method, ApiHost host, string version, Uri relativeUri, IEnumerable<KeyValuePair<string, object>> parameters, IEnumerable<KeyValuePair<string, string>> authorizationParameters, CancellationToken cancellationToken)
         {
             var request = await this.requestBuilder.BuildRequestAsync(method, host, version, relativeUri, parameters, authorizationParameters).ConfigureAwait(false);
-            var isStreaming = host == ApiHost.Api || host == ApiHost.Upload;
+            request.Headers.UserAgent.Add(this.UserAgent);
+            request.Headers.ExpectContinue = false;
 
-#if NET45
+            var isStreaming = !(host == ApiHost.Api || host == ApiHost.Upload);
+
+#if !(PCL || WIN_RT)
             var handler = new WebRequestHandler();
-            handler.ReadWriteTimeout = isStreaming ? System.Threading.Timeout.Infinite : this.ReadWriteTimeout;
+            handler.ReadWriteTimeout = isStreaming ? int.MaxValue : this.ReadWriteTimeout; // -1 is invalid
             handler.ServerCertificateValidationCallback = this.ServerCertificateValidationCallback;
 #else
             var handler = new HttpClientHandler();
 #endif
+            handler.Proxy = this.Proxy;
+            handler.UseProxy = this.UseProxy;
 
             if (!isStreaming && handler.SupportsAutomaticDecompression)
                 handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;

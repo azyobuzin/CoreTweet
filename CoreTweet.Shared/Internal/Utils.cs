@@ -26,16 +26,16 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
-using CoreTweet;
 
 #if !NET35
 using System.Threading;
 using System.Threading.Tasks;
 #endif
 
-namespace CoreTweet.Core
+namespace LibAzyotter.Internal
 {
     internal static class InternalUtils
     {
@@ -149,25 +149,6 @@ namespace CoreTweet.Core
             return exprs.Select(x => new KeyValuePair<string, object>(x.Parameters[0].Name, GetExpressionValue(x)));
         }
 
-        internal static string GetUrl(ConnectionOptions options, string baseUrl, bool needsVersion, string rest)
-        {
-            var result = new StringBuilder(baseUrl.TrimEnd('/'));
-            if (needsVersion)
-            {
-                result.Append('/');
-                result.Append(options != null ? options.ApiVersion : new ConnectionOptions().ApiVersion);
-            }
-            result.Append('/');
-            result.Append(rest);
-            return result.ToString();
-        }
-
-        internal static string GetUrl(ConnectionOptions options, string apiName)
-        {
-            if (options == null) options = new ConnectionOptions();
-            return GetUrl(options, options.ApiUrl, true, apiName + ".json");
-        }
-
         internal static readonly DateTimeOffset unixEpoch = new DateTimeOffset(1970, 1, 1, 0, 0, 0, 0, TimeSpan.Zero);
 
         internal static DateTimeOffset GetUnixTime(long seconds)
@@ -183,38 +164,25 @@ namespace CoreTweet.Core
         private const string XRateLimitLimit = "x-rate-limit-limit";
         private const string XRateLimitRemaining = "x-rate-limit-remaining";
         private const string XRateLimitReset = "x-rate-limit-reset";
-
-        internal static RateLimit ReadRateLimit(HttpWebResponse response)
-        {
-            var limit = response.Headers[XRateLimitLimit];
-            var remaining = response.Headers[XRateLimitRemaining];
-            var reset = response.Headers[XRateLimitReset];
-            return limit != null && remaining != null && reset != null
-                ? new RateLimit()
-                {
-                    Limit = int.Parse(limit),
-                    Remaining = int.Parse(remaining),
-                    Reset = GetUnixTime(long.Parse(reset))
-                }
-                : null;
-        }
-
+        
 #if !NET35
-        internal static RateLimit ReadRateLimit(AsyncResponse response)
+        internal static RateLimit ReadRateLimit(HttpResponseMessage response)
         {
-            if(!new[] { XRateLimitLimit, XRateLimitRemaining, XRateLimitReset }
-                .All(x => response.Headers.ContainsKey(x)))
-                return null;
-
-            var limit = response.Headers[XRateLimitLimit];
-            var remaining = response.Headers[XRateLimitRemaining];
-            var reset = response.Headers[XRateLimitReset];
-            return new RateLimit()
+            var h = response.Headers;
+            IEnumerable<string> limit, remaining, reset;
+            if (h.TryGetValues(XRateLimitLimit, out limit)
+                && h.TryGetValues(XRateLimitRemaining,out remaining)
+                && h.TryGetValues(XRateLimitReset, out reset))
             {
-                Limit = int.Parse(limit),
-                Remaining = int.Parse(remaining),
-                Reset = GetUnixTime(long.Parse(reset))
-            };
+                return new RateLimit()
+                {
+                    Limit = int.Parse(limit.Single()),
+                    Remaining = int.Parse(remaining.Single()),
+                    Reset = GetUnixTime(long.Parse(reset.Single()))
+                };
+            }
+
+            return null;
         }
 #endif
 
@@ -223,7 +191,7 @@ namespace CoreTweet.Core
             return parameters.Single(kvp => kvp.Key == reserved);
         }
 
-#if !(PCL || WIN_RT || WP)
+#if false
         /// <summary>
         /// id, slug, etc
         /// </summary>
@@ -247,7 +215,7 @@ namespace CoreTweet.Core
 #endif
 
 #if !NET35
-        internal static Task<T> AccessParameterReservedApiAsync<T>(this TokensBase t, MethodType m, string uri, string reserved, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
+        internal static Task<T> AccessParameterReservedApiAsync<T>(this TwitterClient t, HttpMethod m, string uri, string reserved, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
             if(parameters == null) throw new ArgumentNullException("parameters");
             var list = parameters.ToList();
@@ -256,87 +224,13 @@ namespace CoreTweet.Core
             return t.AccessApiAsyncImpl<T>(m, uri.Replace(string.Format("{{{0}}}", reserved), kvp.Value.ToString()), list, cancellationToken, "");
         }
 
-        internal static Task<ListedResponse<T>> AccessParameterReservedApiArrayAsync<T>(this TokensBase t, MethodType m, string uri, string reserved, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
+        internal static Task<ListedResponse<T>> AccessParameterReservedApiArrayAsync<T>(this TwitterClient t, HttpMethod m, string uri, string reserved, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
             if(parameters == null) throw new ArgumentNullException("parameters");
             var list = parameters.ToList();
             var kvp = GetReservedParameter(list, reserved);
             list.Remove(kvp);
             return t.AccessApiArrayAsyncImpl<T>(m, uri.Replace(string.Format("{{{0}}}", reserved), kvp.Value.ToString()), list, cancellationToken, "");
-        }
-
-
-        internal static Task<AsyncResponse> ResponseCallback(this Task<AsyncResponse> task, CancellationToken cancellationToken)
-        {
-#if WIN_RT
-            return task.ContinueWith(async t =>
-            {
-                if(t.IsFaulted)
-                    t.Exception.InnerException.Rethrow();
-
-                if(!t.Result.Source.IsSuccessStatusCode)
-                {
-                    var tex = await TwitterException.Create(t.Result).ConfigureAwait(false);
-                    if(tex != null)
-                        throw tex;
-                    t.Result.Source.EnsureSuccessStatusCode();
-                }
-
-                return t.Result;
-            }, cancellationToken).Unwrap();
-#else
-            return task.ContinueWith(t =>
-            {
-                if(t.IsFaulted)
-                {
-                    var wex = t.Exception.InnerException as WebException;
-                    if(wex != null)
-                    {
-                        var tex = TwitterException.Create(wex);
-                        if(tex != null)
-                            throw tex;
-                    }
-                    t.Exception.InnerException.Rethrow();
-                }
-
-                return t.Result;
-            }, cancellationToken);
-#endif
-        }
-
-        internal static Task<T> ReadResponse<T>(Task<AsyncResponse> t, Func<string, T> parse, CancellationToken cancellationToken)
-        {
-            if(t.IsFaulted)
-                t.Exception.InnerException.Rethrow();
-
-            var reg = cancellationToken.Register(t.Result.Dispose);
-            return t.Result.GetResponseStreamAsync()
-                .ContinueWith(t2 =>
-                {
-                    if(t2.IsFaulted)
-                        t2.Exception.InnerException.Rethrow();
-
-                    try
-                    {
-                        using (var sr = new StreamReader(t2.Result))
-                        {
-                            var json = sr.ReadToEnd();
-                            var result = parse(json);
-                            var twitterResponse = result as ITwitterResponse;
-                            if(twitterResponse != null)
-                            {
-                                twitterResponse.RateLimit = ReadRateLimit(t.Result);
-                                twitterResponse.Json = json;
-                            }
-                            return result;
-                        }
-                    }
-                    finally
-                    {
-                        reg.Dispose();
-                        cancellationToken.ThrowIfCancellationRequested();
-                    }
-                }, cancellationToken);
         }
 #endif
     }
