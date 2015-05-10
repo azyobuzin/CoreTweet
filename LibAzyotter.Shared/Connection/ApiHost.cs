@@ -1,4 +1,4 @@
-﻿namespace LibAzyotter
+﻿namespace LibAzyotter.Connection
 {
     public enum ApiHost
     {

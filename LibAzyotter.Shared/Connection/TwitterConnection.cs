@@ -5,7 +5,11 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LibAzyotter
+#if NET45
+using System.Net.Security;
+#endif
+
+namespace LibAzyotter.Connection
 {
     public class TwitterConnection : ITwitterConnection
     {
@@ -31,20 +35,27 @@ namespace LibAzyotter
             }
         }
 
-        public TimeSpan Timeout { get; set; }
+        public TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds(100);
+
+#if NET45
+        public int ReadWriteTimeout { get; set; } = 300000;
+        public RemoteCertificateValidationCallback ServerCertificateValidationCallback { get; set; }
+#endif
 
         public virtual async Task<HttpResponseMessage> SendRequestAsync(HttpMethod method, ApiHost host, string version, Uri relativeUri, IEnumerable<KeyValuePair<string, object>> parameters, IEnumerable<KeyValuePair<string, string>> authorizationParameters, CancellationToken cancellationToken)
         {
-            var request = await this.requestBuilder.BuildRequest(method, host, version, relativeUri, parameters, authorizationParameters).ConfigureAwait(false);
+            var request = await this.requestBuilder.BuildRequestAsync(method, host, version, relativeUri, parameters, authorizationParameters).ConfigureAwait(false);
+            var isStreaming = host == ApiHost.Api || host == ApiHost.Upload;
 
 #if NET45
             var handler = new WebRequestHandler();
-            //TODO: set to .net45 only properties
+            handler.ReadWriteTimeout = isStreaming ? System.Threading.Timeout.Infinite : this.ReadWriteTimeout;
+            handler.ServerCertificateValidationCallback = this.ServerCertificateValidationCallback;
 #else
             var handler = new HttpClientHandler();
 #endif
 
-            if (handler.SupportsAutomaticDecompression && (host == ApiHost.Api || host == ApiHost.Upload))
+            if (!isStreaming && handler.SupportsAutomaticDecompression)
                 handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
             var client = new HttpClient(handler);

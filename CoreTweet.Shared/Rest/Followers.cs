@@ -35,7 +35,7 @@ namespace CoreTweet.Rest
     {
         internal Followers(TokensBase e) : base(e) { }
 
-#if !(PCL || WIN_RT || WP)
+#if false
         //GET Methods
 
         /// <summary>

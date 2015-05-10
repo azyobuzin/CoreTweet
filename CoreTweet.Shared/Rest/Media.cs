@@ -36,7 +36,7 @@ namespace CoreTweet.Rest
     {
         internal Media(TokensBase e) : base(e) { }
 
-#if !(PCL || WIN_RT || WP)
+#if false
         //POST methods
 
         private MediaUploadResult UploadImpl(IEnumerable<KeyValuePair<string, object>> parameters)

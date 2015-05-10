@@ -9,10 +9,10 @@
     <Import_RootNamespace>LibAzyotter</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)ApiHost.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IRequestBuilder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ITwitterConnection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connection\ApiHost.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connection\IRequestBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connection\ITwitterConnection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connection\TwitterConnection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TwitterClient.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TwitterConnection.cs" />
   </ItemGroup>
 </Project>
