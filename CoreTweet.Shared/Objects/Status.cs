@@ -363,12 +363,12 @@ namespace LibAzyotter
         public string Type { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoreTweet.Coordinates"/> class
+        /// Initializes a new instance of the <see cref="Coordinates"/> class
         /// </summary>
         public Coordinates() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoreTweet.Coordinates"/> class
+        /// Initializes a new instance of the <see cref="Coordinates"/> class
         /// </summary>
         /// <param name="longtitude">The longtitude.</param>
         /// <param name="latitude">The latitude.</param>

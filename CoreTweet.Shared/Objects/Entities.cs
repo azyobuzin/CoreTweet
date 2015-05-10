@@ -160,7 +160,7 @@ namespace LibAzyotter
     }
 
     /// <summary>
-    /// Represents the size of the <see cref="CoreTweet.MediaSizes"/>.
+    /// Represents the size of the <see cref="MediaSizes"/>.
     /// </summary>
     public class MediaSize : CoreBase
     {
@@ -278,7 +278,7 @@ namespace LibAzyotter
         public string DisplayUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the expanded version of <see cref="CoreTweet.UrlEntity.DisplayUrl"/>.
+        /// Gets or sets the expanded version of <see cref="DisplayUrl"/>.
         /// </summary>
         // Note that Twitter accepts invalid URLs, for example, "http://..com"
         [JsonProperty("expanded_url")]

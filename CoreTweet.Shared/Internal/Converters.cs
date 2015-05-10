@@ -144,7 +144,7 @@ namespace LibAzyotter.Internal
     }
 
     /// <summary>
-    /// Provides the <see cref="CoreTweet.Contributors"/> converter of the <see cref="Newtonsoft.Json.JsonSerializer"/>.
+    /// Provides the <see cref="Contributors"/> converter of the <see cref="Newtonsoft.Json.JsonSerializer"/>.
     /// </summary>
     public class ContributorsConverter : JsonConverter
     {

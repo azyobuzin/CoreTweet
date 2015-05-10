@@ -123,7 +123,7 @@ namespace LibAzyotter
         /// <summary>
         /// Initializes a new instance of the <see cref="DictionaryResponse&lt;TKey, TValue&gt;"/> class with a specified dictionary and rate limit.
         /// </summary>
-        /// <param name="dictionary">The dictionary whose elements are copied to the new <see cref="CoreTweet.Core.DictionaryResponse&lt;TKey, TValue&gt;"/>.</param>
+        /// <param name="dictionary">The dictionary whose elements are copied to the new <see cref="DictionaryResponse&lt;TKey, TValue&gt;"/>.</param>
         /// <param name="rateLimit">The rate limit.</param>
         /// <param name="json">The JSON.</param>
         public DictionaryResponse(Dictionary<TKey, TValue> dictionary, RateLimit rateLimit, string json)

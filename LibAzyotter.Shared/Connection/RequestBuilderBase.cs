@@ -70,7 +70,11 @@ namespace LibAzyotter.Connection
             );
         }
 
-        protected virtual async Task<HttpContent> CreateHttpContentAsync(IEnumerable<KeyValuePair<string, object>> parameters)
+        protected virtual
+#if WIN_RT
+        async
+#endif
+        Task<HttpContent> CreateHttpContentAsync(IEnumerable<KeyValuePair<string, object>> parameters)
         {
             var prmArray = parameters.ToArray();
             if (prmArray.Select(x => x.Value).Any(x => x is Stream || x is IEnumerable<byte>
@@ -128,11 +132,20 @@ namespace LibAzyotter.Connection
                     else
                         content.Add(new StringContent(x.Value.ToString()), x.Key);
                 }
+#if WIN_RT
                 return content;
+#else
+                return Task.FromResult(content as HttpContent);
+#endif
             }
             else
             {
-                return new FormUrlEncodedContent(prmArray.Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())));
+                HttpContent content = new FormUrlEncodedContent(prmArray.Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())));
+#if WIN_RT
+                return content;
+#else
+                return Task.FromResult(content);
+#endif
             }
         }
 

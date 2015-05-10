@@ -184,7 +184,7 @@ namespace LibAzyotter
         public Uri ProfileBackgroundImageUrlHttps { get; set; }
 
         /// <summary>
-        /// Gets or sets a value that determines if the user's <see cref="CoreTweet.User.ProfileBackgroundImageUrl"/> should be tiled when displayed.
+        /// Gets or sets a value that determines if the user's <see cref="ProfileBackgroundImageUrl"/> should be tiled when displayed.
         /// </summary>
         [JsonProperty("profile_background_tile")]
         public bool IsProfileBackgroundTile { get; set; }
@@ -254,8 +254,8 @@ namespace LibAzyotter
 
         /// <summary>
         /// <para>Gets or sets the screen name, handle, or alias that this user identifies themselves with.</para>
-        /// <para><see cref="CoreTweet.User.ScreenName"/> are unique but subject to be changed.</para>
-        /// <para>Use <see cref="CoreTweet.User.Id"/> as a user identifier whenever possible.</para>
+        /// <para><see cref="ScreenName"/> are unique but subject to be changed.</para>
+        /// <para>Use <see cref="Id"/> as a user identifier whenever possible.</para>
         /// <para>Typically a maximum of 15 characters long, but some historical accounts may exist with longer names.</para>
         /// </summary>
         [JsonProperty("screen_name")]
@@ -630,13 +630,13 @@ namespace LibAzyotter
     public class UserEntities : CoreBase
     {
         /// <summary>
-        /// Gets or sets the entities for <see cref="CoreTweet.User.Url"/> field.
+        /// Gets or sets the entities for <see cref="User.Url"/> field.
         /// </summary>
         [JsonProperty("url")]
         public Entities Url { get; set; }
 
         /// <summary>
-        /// Gets or sets the entities for <see cref="CoreTweet.User.Description"/> field.
+        /// Gets or sets the entities for <see cref="User.Description"/> field.
         /// </summary>
         [JsonProperty("description")]
         public Entities Description { get; set; }
