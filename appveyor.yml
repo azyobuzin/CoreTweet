@@ -1,7 +1,4 @@
-version: 0.4.3.{build}
-
-install:
-  - cinst -y doxygen.portable
+version: 1.0.{build}
 
 assembly_info:
   patch: true
@@ -17,18 +14,13 @@ nuget:
 configuration: Release
 
 build:
-  project: CoreTweet-All.sln
+  project: LibAzyotter.sln
   parallel: true
 
 before_build:
-  - cmd: nuget restore CoreTweet-All.sln
+  - cmd: nuget restore LibAzyotter.sln
 
 after_build:
-  - ps: .\build.ps1 -Package
-  - ps: rm .\Release\* -Recurse -Exclude CoreTweet*
-  - ps: .\build.ps1 -Docs
-
-# Artifacts
-artifacts:
-  - path: Release
-    name: ReleasePackage
+  - nuget pack LibAzyotter.nuspec
+  - nuget pack LibAzyotter.Reactive.nuspec
+  - ps: Get-ChildItem .\*.nupkg | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }

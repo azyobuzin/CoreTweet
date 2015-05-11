@@ -33,7 +33,7 @@ namespace LibAzyotter.Api
         private Task<string> InvalidateTokenAsyncImpl(IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
             return this.Client.AccessApiAsyncImpl(HttpMethod.Post, ApiHost.Api, null, "oauth2/invalidate_token",
-                parameters.Select(x => x.Value != null && x.Value is string
+                parameters.Select(x => (x.Value as string) != null
                     ? new KeyValuePair<string, object>(x.Key, Uri.UnescapeDataString((string)x.Value)) : x),
                 null, cancellationToken, s => (string)JObject.Parse(s)["access_token"]);
         }
