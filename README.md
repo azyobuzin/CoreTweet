@@ -7,3 +7,7 @@ LibAzyotter は [CoreTweet](https://github.com/CoreTweet/CoreTweet) から派生
 - 破壊的変更のオンパレード
 - 高速リリースサイクル
 
+自分で使う環境でしかテストしないと思うので、 Windows Universal アプリや mono 固有の挙動の違いにはなかなか気づかないかもしれません。
+
+# Wiki
+書いていこうと思う。
