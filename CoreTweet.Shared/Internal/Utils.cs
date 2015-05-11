@@ -39,14 +39,14 @@ namespace LibAzyotter.Internal
 {
     internal static class InternalUtils
     {
-        internal static IEnumerable<KeyValuePair<string, object>> ResolveObject<T>(T t)
+        internal static IEnumerable<KeyValuePair<string, object>> ResolveObject(object t)
         {
             if(t == null)
                 return new Dictionary<string, object>();
             if(t is IEnumerable<KeyValuePair<string, object>>)
                 return t as IEnumerable<KeyValuePair<string, object>>;
 
-            var type = typeof(T).GetTypeInfo();
+            var type = t.GetType().GetTypeInfo();
 
             if(type.GetCustomAttributes(typeof(TwitterParametersAttribute), false).Any())
             {

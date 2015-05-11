@@ -85,6 +85,10 @@ namespace LibAzyotter
         /// </summary>
         public Media Media { get { return new Media(this); } }
         /// <summary>
+        /// Gets the wrapper of OAuth.
+        /// </summary>
+        public OAuth OAuth { get { return new OAuth(this); } }
+        /// <summary>
         /// Gets the wrapper of mutes.
         /// </summary>
         public Mutes Mutes { get { return new Mutes(this); } }
@@ -115,21 +119,16 @@ namespace LibAzyotter
 
         #endregion
 
-        public static TwitterClient CreateOAuthClient(string consumerKey, string consumerSecret, string accessToken, string accessTokenSecret)
+        public static TwitterClient CreateOAuthClient(string consumerKey, string consumerSecret, string oauthToken = null, string oauthTokenSecret = null)
         {
-            if (string.IsNullOrEmpty(consumerKey)) throw new ArgumentNullException(nameof(consumerKey));
-            if (string.IsNullOrEmpty(consumerSecret)) throw new ArgumentNullException(nameof(consumerSecret));
-            if (string.IsNullOrEmpty(accessToken)) throw new ArgumentNullException(nameof(accessToken));
-            if (string.IsNullOrEmpty(accessTokenSecret)) throw new ArgumentNullException(nameof(accessTokenSecret));
-
-            return new TwitterClient(new TwitterConnection(new OAuthRequestBuilder(consumerKey, consumerSecret, accessToken, accessTokenSecret)));
+            return new TwitterClient(new TwitterConnection(new OAuthRequestBuilder(consumerKey, consumerSecret, oauthToken, oauthTokenSecret)));
         }
 
         internal const string ApiVersion = "1.1";
 
-        internal async Task<HttpResponseMessage> InternalSendRequestAsync(HttpMethod method, ApiHost host, string version, Uri relativeUri, IEnumerable<KeyValuePair<string, object>> parameters, IEnumerable<KeyValuePair<string, string>> authorizationParameters, CancellationToken cancellationToken)
+        internal async Task<HttpResponseMessage> InternalSendRequestAsync(HttpMethod method, ApiHost host, string version, string relativeUri, IEnumerable<KeyValuePair<string, object>> parameters, IEnumerable<KeyValuePair<string, string>> authorizationParameters, CancellationToken cancellationToken)
         {
-            var res = await this.connection.SendRequestAsync(method, host, version, relativeUri, parameters, authorizationParameters, cancellationToken).ConfigureAwait(false);
+            var res = await this.connection.SendRequestAsync(method, host, version, new Uri(relativeUri, UriKind.Relative), parameters, authorizationParameters, cancellationToken).ConfigureAwait(false);
             if (!res.IsSuccessStatusCode)
             {
                 var tex = await TwitterException.CreateAsync(res).ConfigureAwait(false);
@@ -141,7 +140,7 @@ namespace LibAzyotter
 
         private Task<HttpResponseMessage> InternalSendRequestAsync(HttpMethod method, string url, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
-            return this.InternalSendRequestAsync(method, ApiHost.Api, ApiVersion, new Uri(url + ".json", UriKind.Relative), parameters, null, cancellationToken);
+            return this.InternalSendRequestAsync(method, ApiHost.Api, ApiVersion, url + ".json", parameters, null, cancellationToken);
         }
 
         private static async Task<T> ReadResponse<T>(HttpResponseMessage res, Func<string, T> parse)
@@ -157,7 +156,7 @@ namespace LibAzyotter
             return result;
         }
 
-        internal async Task<T> AccessApiAsyncImpl<T>(HttpMethod method, ApiHost host, string version, Uri relativeUri, IEnumerable<KeyValuePair<string, object>> parameters, IEnumerable<KeyValuePair<string, string>> authorizationParameters, CancellationToken cancellationToken, Func<string, T> parse)
+        internal async Task<T> AccessApiAsyncImpl<T>(HttpMethod method, ApiHost host, string version, string relativeUri, IEnumerable<KeyValuePair<string, object>> parameters, IEnumerable<KeyValuePair<string, string>> authorizationParameters, CancellationToken cancellationToken, Func<string, T> parse)
         {
             using (var res = await this.InternalSendRequestAsync(method, host, version, relativeUri, parameters, authorizationParameters, cancellationToken).ConfigureAwait(false))
                 return await ReadResponse(res, parse).ConfigureAwait(false);

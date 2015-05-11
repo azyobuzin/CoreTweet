@@ -41,7 +41,7 @@ namespace LibAzyotter.Api
         {
             return this.Client.AccessApiAsyncImpl(
                 HttpMethod.Post, ApiHost.Upload, TwitterClient.ApiVersion,
-                new Uri("media/upload.json"), parameters, null, cancellationToken,
+                "media/upload.json", parameters, null, cancellationToken,
                 s => CoreBase.Convert<MediaUploadResult>(s)
             );
         }
