@@ -85,9 +85,13 @@ namespace LibAzyotter
         /// </summary>
         public Media Media { get { return new Media(this); } }
         /// <summary>
-        /// Gets the wrapper of OAuth.
+        /// Gets the wrapper of oauth.
         /// </summary>
         public OAuth OAuth { get { return new OAuth(this); } }
+        /// <summary>
+        /// Gets the wrapper of oauth2
+        /// </summary>
+        public OAuth2 OAuth2 { get { return new OAuth2(this); } }
         /// <summary>
         /// Gets the wrapper of mutes.
         /// </summary>
@@ -122,6 +126,16 @@ namespace LibAzyotter
         public static TwitterClient CreateOAuthClient(string consumerKey, string consumerSecret, string oauthToken = null, string oauthTokenSecret = null)
         {
             return new TwitterClient(new TwitterConnection(new OAuthRequestBuilder(consumerKey, consumerSecret, oauthToken, oauthTokenSecret)));
+        }
+
+        public static TwitterClient CreateOAuth2BasicClient(string consumerKey, string consumerSecret)
+        {
+            return new TwitterClient(new TwitterConnection(new OAuth2BasicRequestBuilder(consumerKey, consumerSecret)));
+        }
+
+        public static TwitterClient CreateOAuth2BearerClient(string accessToken)
+        {
+            return new TwitterClient(new TwitterConnection(new OAuth2BearerRequestBuilder(accessToken)));
         }
 
         internal const string ApiVersion = "1.1";

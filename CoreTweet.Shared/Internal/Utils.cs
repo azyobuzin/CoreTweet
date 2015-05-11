@@ -136,7 +136,7 @@ namespace LibAzyotter.Internal
         private static object GetExpressionValue(Expression<Func<string,object>> expr)
         {
             var constExpr = expr.Body as ConstantExpression;
-            return constExpr != null ? constExpr.Value : expr.Compile()("");
+            return constExpr != null ? constExpr.Value : expr.Compile()(expr.Parameters[0].Name);
         }
 
         private static object GetDefaultValue(Type type)
