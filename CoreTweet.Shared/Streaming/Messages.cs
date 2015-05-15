@@ -233,7 +233,7 @@ namespace LibAzyotter
         /// </summary>
         DirectMesssage,
         /// <summary>
-        /// <para>The message is a list of the userfs friends.</para>
+        /// <para>The message is a list of the user's friends.</para>
         /// <para>Twitter sends a preamble before starting regular message delivery upon establishing a User Stream connection.</para>
         /// </summary>
         Friends,
