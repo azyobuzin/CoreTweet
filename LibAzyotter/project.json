@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.1-*",
   "description": "The modern Twitter library, fork project of CoreTweet. The goal is, it has more flexible API structure.",
   "authors": [ "azyobuzin", "CoreTweet Development Team" ],
@@ -36,6 +36,6 @@
     }
   },
   "scripts": {
-    "prebuild": "dnx -p ../RestApisGen/project.json run \"%project:Directory%/../\""
+    "prebuild": "dnx -p ../RestApisGen run \"%project:Directory%/../\""
   }
 }
