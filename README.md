@@ -1,13 +1,13 @@
 # LibAzyotter
-LibAzyotter �� [CoreTweet](https://github.com/CoreTweet/CoreTweet) ����h������ Twitter ���C�u�����ł��B
-�ʐM�����̃C���^�[�t�F�C�X�ւ̐؂�o�����s���A�_��̍����A������ Twitter API ���b�p�[�ɂ��邽�߂̕ύX���������Ă��܂��B
+LibAzyotter は [CoreTweet](https://github.com/CoreTweet/CoreTweet) から派生した Twitter ライブラリです。
+通信部分のインターフェイスへの切り出しを行い、柔軟性の高い、純粋な Twitter API ラッパーにするための変更が加えられています。
 
-# ���j
-- CoreTweet ���̂̕ύX�ɒǏ]
-- �j��I�ύX�̃I���p���[�h
-- ���������[�X�T�C�N��
+# 方針
+- CoreTweet 自体の変更に追従
+- 破壊的変更のオンパレード
+- 高速リリースサイクル
 
-�����Ŏg�����ł����e�X�g���Ȃ��Ǝv���̂ŁA Windows Universal �A�v���� mono �ŗL�̋����̈Ⴂ�ɂ͂Ȃ��Ȃ��C�Â��Ȃ���������܂���B
+自分で使う環境でしかテストしないと思うので、 Windows Universal アプリや mono 固有の挙動の違いにはなかなか気づかないかもしれません。
 
 # Wiki
-�����Ă������Ǝv���B
+書いていこうと思う。
