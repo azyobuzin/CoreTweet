@@ -28,7 +28,7 @@ using System.Linq;
 #if WIN_RT
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
-#elif !PCL
+#elif !(PCL || DOTNET)
 using System.Security.Cryptography;
 #endif
 
@@ -36,7 +36,7 @@ namespace LibAzyotter.Internal
 {
     internal static class SecurityUtils
     {
-#if PCL
+#if PCL || DOTNET
         private static byte[] GetBytes(long value)
         {
             var b = BitConverter.GetBytes(value);
@@ -139,7 +139,7 @@ namespace LibAzyotter.Internal
 
         internal static byte[] HmacSha1(IEnumerable<byte> key, IEnumerable<byte> message)
         {
-#if PCL
+#if PCL || DOTNET
             var k = key.ToList();
             if(k.Count > 64)
                 k = Sha1(k).ToList();

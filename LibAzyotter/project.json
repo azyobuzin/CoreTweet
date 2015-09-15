@@ -25,7 +25,6 @@
         "System.Linq.Expressions": "4.0.10",
         "System.Net.Http": "4.0.0",
         "System.Reflection.TypeExtensions": "4.0.0",
-        "System.Security.Cryptography.Algorithms": "4.0.0-beta-23225",
         "System.Text.RegularExpressions": "4.0.10"
       }
     },
