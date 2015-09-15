@@ -1,7 +1,7 @@
 // The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2014 lambdalice
+// Copyright (c) 2013-2015 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,12 @@ namespace LibAzyotter
         /// </summary>
         [JsonProperty("characters_reserved_per_media")]
         public int CharactersReservedPerMedia { get; set; }
+
+        /// <summary>
+        /// Gets or sets the limit of the characters that can be sent as a DM.
+        /// </summary>
+        [JsonProperty("dm_text_character_limit")]
+        public int DMTextCharacterLimit { get; set; }
 
         /// <summary>
         /// Gets or sets the count of the limit of the count of medias that can be uploaded at once.
@@ -94,19 +100,19 @@ namespace LibAzyotter
         /// Gets or sets the the language code.
         /// </summary>
         [JsonProperty("code")]
-        public string Code{ get; set; }
+        public string Code { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the language.
         /// </summary>
         [JsonProperty("name")]
-        public string Name{ get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the status of the language.
         /// </summary>
         [JsonProperty("status")]
-        public string Status{ get; set; }
+        public string Status { get; set; }
     }
 
     /// <summary>
@@ -123,13 +129,7 @@ namespace LibAzyotter
         /// <summary>
         /// Gets or sets the value of response.
         /// </summary>
-        public string Value
-        {
-            get
-            {
-                return this.privacy ?? this.tos;
-            }
-        }
+        public string Value => this.privacy ?? this.tos;
 
         /// <summary>
         /// Gets or sets the rate limit of the response.

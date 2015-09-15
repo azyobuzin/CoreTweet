@@ -1,7 +1,7 @@
 // The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2014 lambdalice
+// Copyright (c) 2013-2015 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using LibAzyotter.Internal;
@@ -30,12 +31,14 @@ using Newtonsoft.Json;
 namespace LibAzyotter
 {
     /// <summary>
-    /// <para>Represents a place, which are specific, named locations with corresponding geo coordinates.</para>
+    /// Represents a place, which are specific, named locations with corresponding geo coordinates.
+    /// </summary>
+    /// <remarks>
     /// <para>They can be attached to Tweets by specifying a place_id when tweeting.</para>
     /// <para>Tweets associated with places are not necessarily issued from that location but could also potentially be about that location.</para>
     /// <para>Places can be searched for.</para>
     /// <para>Tweets can also be found by place_id.</para>
-    /// </summary>
+    /// </remarks>
     public class Place : CoreBase
     {
         /// <summary>
@@ -93,8 +96,7 @@ namespace LibAzyotter
         /// Gets or sets the URL representing the location of additional place metadata for this place.
         /// </summary>
         [JsonProperty("url")]
-        [JsonConverter(typeof(UriConverter))]
-        public Uri Url { get; set; }
+        public string Url { get; set; }
 
         /// <summary>
         /// Gets or sets the array of Places contained within this Place.
@@ -113,13 +115,15 @@ namespace LibAzyotter
     }
 
     /// <summary>
-    /// <para>Represents a place with rate limit.</para>
+    /// Represents a place with rate limit.
+    /// </summary>
+    /// <remarks> 
     /// <para>Places are specific, named locations with corresponding geo coordinates.</para>
     /// <para>They can be attached to Tweets by specifying a place_id when tweeting.</para>
     /// <para>Tweets associated with places are not necessarily issued from that location but could also potentially be about that location.</para>
     /// <para>Places can be searched for.</para>
     /// <para>Tweets can also be found by place_id.</para>
-    /// </summary>
+    /// </remarks>
     public class PlaceResponse : Place, ITwitterResponse
     {
         /// <summary>
@@ -135,7 +139,7 @@ namespace LibAzyotter
 
     /// <summary>
     /// <para>Represents a bounding box.</para>
-    /// <para>This class can be converted to a JSON with <see cref="Newtonsoft.Json.JsonConvert.SerializeObject(object)"/>.</para>
+    /// <para>This class can be converted to a JSON with <see cref="JsonConvert.SerializeObject(object)"/>.</para>
     /// </summary>
     [JsonObject]
     public class BoundingBox : CoreBase, IEnumerable<Coordinates>
@@ -161,9 +165,9 @@ namespace LibAzyotter
         [JsonProperty("type")]
         public string Type { get; set; }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetCoordinates().ToArray().GetEnumerator();
+            return GetCoordinates().GetEnumerator();
         }
 
         /// <summary>
@@ -184,7 +188,7 @@ namespace LibAzyotter
         {
             get
             {
-                return GetCoordinates().ToArray()[index];
+                return GetCoordinates().ElementAt(index);
             }
             set
             {
@@ -223,19 +227,13 @@ namespace LibAzyotter
         /// </summary>
         public string Json { get; set; }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return Places.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => this.Places.GetEnumerator();
 
         /// <summary>
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
         /// <returns>An IEnumerator object that can be used to iterate through the collection.</returns>
-        public IEnumerator<Place> GetEnumerator()
-        {
-            return (Places as IEnumerable<Place>).GetEnumerator();
-        }
+        public IEnumerator<Place> GetEnumerator() => (this.Places as IEnumerable<Place>).GetEnumerator();
     }
 
     /// <summary>
@@ -270,10 +268,7 @@ namespace LibAzyotter
         [JsonProperty("trends")]
         public Trend[] Trends { get; set; }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return Trends.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => Trends.GetEnumerator();
 
         /// <summary>
         /// Returns an enumerator that iterates through a collection.
@@ -369,8 +364,7 @@ namespace LibAzyotter
         /// Gets or sets the URL to search this trend.
         /// </summary>
         [JsonProperty("url")]
-        [JsonConverter(typeof(UriConverter))]
-        public Uri Url { get; set; }
+        public string Url { get; set; }
 
         /// <summary>
         /// Gets or sets the query string for search.
@@ -412,8 +406,7 @@ namespace LibAzyotter
         /// Gets or sets the URL of Yahoo! GeoPlanet API.
         /// </summary>
         [JsonProperty("url")]
-        [JsonConverter(typeof(UriConverter))]
-        public Uri Url { get; set; }
+        public string Url { get; set; }
     }
 
     /// <summary>

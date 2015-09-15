@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibAzyotter.Reactive", "CoreTweet.Streaming.Reactive\LibAzyotter.Reactive.csproj", "{7F946219-A568-4E49-955D-F18C20CEF016}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CoreTweet.Shared", "CoreTweet.Shared\CoreTweet.Shared.shproj", "{0143F454-1D66-48D0-AA28-7BA7A2502EA5}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LibAzyotter.Shared", "LibAzyotter.Shared\LibAzyotter.Shared.shproj", "{68060688-60CB-42DE-971B-C6EE8BFDD300}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestApisGen", "RestApisGen\RestApisGen.csproj", "{4CE2E990-4E40-4BDF-86AF-372A5275C397}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -95,12 +97,21 @@ Global
 		{AA61A688-5AF5-4171-99CA-5D3EF3DCE9E6}.Release|ARM.ActiveCfg = Release|Any CPU
 		{AA61A688-5AF5-4171-99CA-5D3EF3DCE9E6}.Release|x64.ActiveCfg = Release|Any CPU
 		{AA61A688-5AF5-4171-99CA-5D3EF3DCE9E6}.Release|x86.ActiveCfg = Release|Any CPU
+		{4CE2E990-4E40-4BDF-86AF-372A5275C397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CE2E990-4E40-4BDF-86AF-372A5275C397}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CE2E990-4E40-4BDF-86AF-372A5275C397}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{4CE2E990-4E40-4BDF-86AF-372A5275C397}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4CE2E990-4E40-4BDF-86AF-372A5275C397}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4CE2E990-4E40-4BDF-86AF-372A5275C397}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CE2E990-4E40-4BDF-86AF-372A5275C397}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{4CE2E990-4E40-4BDF-86AF-372A5275C397}.Release|ARM.ActiveCfg = Debug|Any CPU
+		{4CE2E990-4E40-4BDF-86AF-372A5275C397}.Release|x64.ActiveCfg = Debug|Any CPU
+		{4CE2E990-4E40-4BDF-86AF-372A5275C397}.Release|x86.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = CoreTweet\CoreTweet.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.FileWidth = 999

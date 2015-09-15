@@ -1,7 +1,7 @@
 // The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2014 lambdalice
+// Copyright (c) 2013-2015 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -165,7 +165,11 @@ namespace LibAzyotter
         /// <summary>
         /// The user retweets a retweet.
         /// </summary>
-        RetweetedRetweet
+        RetweetedRetweet,
+        /// <summary>
+        /// The user quotes a Tweet.
+        /// </summary>
+        QuotedTweet
     }
 
     /// <summary>
@@ -259,7 +263,7 @@ namespace LibAzyotter
         /// <summary>
         /// Gets the type of the message.
         /// </summary>
-        public MessageType Type { get { return GetMessageType(); } }
+        public MessageType Type => this.GetMessageType();
 
         /// <summary>
         /// Gets or sets the raw JSON.
@@ -317,11 +321,11 @@ namespace LibAzyotter
             JToken jt;
             if(jo.TryGetValue("disconnect", out jt))
                 return jt.ToObject<DisconnectMessage>();
-            else if(jo.TryGetValue("warning", out jt))
+            if(jo.TryGetValue("warning", out jt))
                 return jt.ToObject<WarningMessage>();
-            else if(jo.TryGetValue("control", out jt))
+            if(jo.TryGetValue("control", out jt))
                 return jt.ToObject<ControlMessage>();
-            else if(jo.TryGetValue("delete", out jt))
+            if(jo.TryGetValue("delete", out jt))
             {
                 JToken status;
                 DeleteMessage id;
@@ -340,43 +344,43 @@ namespace LibAzyotter
                     id.Timestamp = InternalUtils.GetUnixTimeMs(long.Parse((string)timestamp));
                 return id;
             }
-            else if(jo.TryGetValue("scrub_geo", out jt))
+            if(jo.TryGetValue("scrub_geo", out jt))
             {
                 return jt.ToObject<ScrubGeoMessage>();
             }
-            else if(jo.TryGetValue("limit", out jt))
+            if(jo.TryGetValue("limit", out jt))
             {
                 return jt.ToObject<LimitMessage>();
             }
-            else if(jo.TryGetValue("status_withheld", out jt))
+            if(jo.TryGetValue("status_withheld", out jt))
             {
                 return jt.ToObject<StatusWithheldMessage>();
             }
-            else if(jo.TryGetValue("user_withheld", out jt))
+            if(jo.TryGetValue("user_withheld", out jt))
             {
                 return jt.ToObject<UserWithheldMessage>();
             }
-            else if(jo.TryGetValue("user_delete", out jt))
+            if(jo.TryGetValue("user_delete", out jt))
             {
                 var m = jt.ToObject<UserMessage>();
                 m.messageType = MessageType.UserDelete;
                 return m;
             }
-            else if(jo.TryGetValue("user_undelete", out jt))
+            if(jo.TryGetValue("user_undelete", out jt))
             {
                 var m = jt.ToObject<UserMessage>();
                 m.messageType = MessageType.UserUndelete;
                 return m;
             }
-            else if(jo.TryGetValue("user_suspend", out jt))
+            if(jo.TryGetValue("user_suspend", out jt))
             {
                 // user_suspend doesn't have 'timestamp_ms' field
                 var m = jt.ToObject<UserMessage>();
                 m.messageType = MessageType.UserSuspend;
                 return m;
             }
-            else
-                throw new ParsingException("on streaming, cannot parse the json: unsupported type", jo.ToString(Formatting.Indented), null);
+
+            throw new ParsingException("on streaming, cannot parse the json: unsupported type", jo.ToString(Formatting.Indented), null);
         }
     }
 

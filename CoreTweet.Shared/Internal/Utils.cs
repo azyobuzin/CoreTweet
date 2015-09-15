@@ -1,7 +1,7 @@
 // The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2014 lambdalice
+// Copyright (c) 2013-2015 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,6 +20,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,8 +44,8 @@ namespace LibAzyotter.Internal
         {
             if(t == null)
                 return new Dictionary<string, object>();
-            if(t is IEnumerable<KeyValuePair<string, object>>)
-                return t as IEnumerable<KeyValuePair<string, object>>;
+            var ie = t as IEnumerable<KeyValuePair<string, object>>;
+            if(ie != null) return ie;
 
             var type = t.GetType().GetTypeInfo();
 
@@ -54,84 +55,130 @@ namespace LibAzyotter.Internal
 
                 foreach(var f in type.DeclaredFields.Where(x => x.IsPublic && !x.IsStatic))
                 {
-                    var attr = (TwitterParameterAttribute)f.GetCustomAttributes(true).FirstOrDefault(y => y is TwitterParameterAttribute);
+                    var attr = f.GetCustomAttributes(true).OfType<TwitterParameterAttribute>().FirstOrDefault();
                     var value = f.GetValue(t);
-                    if(attr.DefaultValue == null)
-                        attr.DefaultValue = GetDefaultValue(t.GetType());
-
-                    if(attr != null && value != null && !value.Equals(attr.DefaultValue))
+                    if(attr != null && value != null)
                     {
-                        var name = attr.Name;
-                        d.Add(name != null ? name : f.Name, value);
+                        var defaultValue = attr.DefaultValue ?? GetDefaultValue(t.GetType());
+                        if(!value.Equals(defaultValue))
+                            d.Add(attr.Name ?? f.Name, value);
                     }
                 }
 
                 foreach(var p in type.DeclaredProperties.Where(x => x.CanRead && x.GetMethod.IsPublic && !x.GetMethod.IsStatic))
                 {
-                    var attr = (TwitterParameterAttribute)p.GetCustomAttributes(true).FirstOrDefault(y => y is TwitterParameterAttribute);
+                    var attr = p.GetCustomAttributes(true).OfType<TwitterParameterAttribute>().FirstOrDefault();
                     var value = p.GetValue(t, null);
-                    if(attr.DefaultValue == null)
-                        attr.DefaultValue = GetDefaultValue(t.GetType());
-
-                    if(attr != null && value != null && !value.Equals(attr.DefaultValue))
+                    if(attr != null && value != null)
                     {
-                        var name = attr.Name;
-                        d.Add(name != null ? name : p.Name, value);
+                        var defaultValue = attr.DefaultValue ?? GetDefaultValue(t.GetType());
+                        if(!value.Equals(defaultValue))
+                            d.Add(attr.Name ?? p.Name, value);
                     }
                 }
 
                 return d;
             }
-            else
-            {
-                // IEnumerable<KeyVakuePair<string, Any>> or IEnumerable<Tuple<string, Any>>
-                var ienumerable = t as System.Collections.IEnumerable;
-                if(ienumerable != null)
-                {
-                    var elements = ienumerable.Cast<object>();
-                    var ieElementTypes =
-                        type.GetInterfaces()
-                        .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-                        .Select(x => x.GenericTypeArguments[0].GetTypeInfo())
-                        .Where(x => x.IsGenericType && x.GenericTypeArguments[0] == typeof(string));
-                    foreach(var genericElement in ieElementTypes)
-                    {
-                        var genericTypeDefinition = genericElement.GetGenericTypeDefinition();
-                        if(genericTypeDefinition == typeof(KeyValuePair<,>))
-                        {
-                            var getKey = genericElement.GetProperty("Key").GetGetMethod();
-                            var getValue = genericElement.GetProperty("Value").GetGetMethod();
-                            return elements.Select(x => new KeyValuePair<string, object>(
-                                getKey.Invoke(x, null) as string,
-                                getValue.Invoke(x, null)
-                            ));
-                        }
-#if !NET35
-                        else if(genericTypeDefinition == typeof(Tuple<,>))
-                        {
-                            var getItem1 = genericElement.GetProperty("Item1").GetGetMethod();
-                            var getItem2 = genericElement.GetProperty("Item2").GetGetMethod();
-                            return elements.Select(x => new KeyValuePair<string, object>(
-                                getItem1.Invoke(x, null) as string,
-                                getItem2.Invoke(x, null)
-                            ));
-                        }
-#endif
-                    }
-                }
 
-                return AnnoToDictionary(t);
+            // IEnumerable<KeyVakuePair<string, Any>> or IEnumerable<Tuple<string, Any>>
+            var ienumerable = t as System.Collections.IEnumerable;
+            if(ienumerable != null)
+            {
+                var elements = ienumerable.Cast<object>();
+                var ieElementTypes =
+                    type.GetInterfaces()
+                    .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                    .Select(x => x.GenericTypeArguments[0].GetTypeInfo())
+                    .Where(x => x.IsGenericType && x.GenericTypeArguments[0] == typeof(string));
+                foreach(var genericElement in ieElementTypes)
+                {
+                    var genericTypeDefinition = genericElement.GetGenericTypeDefinition();
+                    if(genericTypeDefinition == typeof(KeyValuePair<,>))
+                    {
+                        var getKey = genericElement.GetProperty("Key").GetGetMethod();
+                        var getValue = genericElement.GetProperty("Value").GetGetMethod();
+                        return elements.Select(x => new KeyValuePair<string, object>(
+                            (string)getKey.Invoke(x, null),
+                            getValue.Invoke(x, null)
+                        ));
+                    }
+#if !NET35
+                    if(genericTypeDefinition == typeof(Tuple<,>))
+                    {
+                        var getItem1 = genericElement.GetProperty("Item1").GetGetMethod();
+                        var getItem2 = genericElement.GetProperty("Item2").GetGetMethod();
+                        return elements.Select(x => new KeyValuePair<string, object>(
+                            (string)getItem1.Invoke(x, null),
+                            getItem2.Invoke(x, null)
+                        ));
+                    }
+#endif
+                }
             }
+
+#if !NET35
+            // Tuple<Tuple<string, Any>, Tuple<string, Any>, ...>
+            if (type.Namespace == "System" && type.Name.StartsWith("Tuple`"))
+            {
+                var items = EnumerateTupleItems(t).ToArray();
+                try
+                {
+                    return items.Select(x =>
+                    {
+                        var xtype = x.GetType();
+                        return new KeyValuePair<string, object>(
+#if true
+                            (string)xtype.GetRuntimeProperty("Item1").GetValue(x),
+                            xtype.GetRuntimeProperty("Item2").GetValue(x)
+#else
+                            (string)xtype.GetProperty("Item1").GetValue(x, null),
+                            xtype.GetProperty("Item2").GetValue(x, null)
+#endif
+                        );
+                    }).ToArray();
+                }
+                catch
+                {
+                    return ResolveObject(items);
+                }
+            }
+#endif
+
+            return AnnoToDictionary(t);
         }
 
-        private static IDictionary<string,object> AnnoToDictionary<T>(T f)
+        private static IDictionary<string,object> AnnoToDictionary(object f)
         {
-            return typeof(T).GetRuntimeProperties()
+            return f.GetType().GetRuntimeProperties()
                 .Where(x => x.CanRead && x.GetIndexParameters().Length == 0)
                 .Select(x => Tuple.Create(x.Name, x.GetMethod))
                 .Where(x => x.Item2.IsPublic && !x.Item2.IsStatic)
                 .ToDictionary(x => x.Item1, x => x.Item2.Invoke(f, null));
         }
+
+#if !NET35
+        private static IEnumerable<object> EnumerateTupleItems(object tuple)
+        {
+            while(true)
+            {
+#if true
+                var type = tuple.GetType().GetTypeInfo();
+                var props = type.DeclaredProperties;
+#else
+                var type = tuple.GetType();
+                var props = type.GetProperties();
+#endif
+
+                foreach(var p in props.Where(x => x.Name.StartsWith("Item")).OrderBy(x => x.Name))
+                    yield return p.GetValue(tuple, null);
+
+                if(type.GetGenericTypeDefinition() == typeof(Tuple<,,,,,,,>))
+                    tuple = type.GetProperty("Rest").GetValue(tuple, null);
+                else
+                    break;
+            }
+        }
+#endif
 
         private static object GetExpressionValue(Expression<Func<string,object>> expr)
         {
@@ -197,7 +244,7 @@ namespace LibAzyotter.Internal
         /// </summary>
         internal static T AccessParameterReservedApi<T>(this TokensBase t, MethodType m, string uri, string reserved, IEnumerable<KeyValuePair<string, object>> parameters)
         {
-            if(parameters == null) throw new ArgumentNullException("parameters");
+            if(parameters == null) throw new ArgumentNullException(nameof(parameters));
             var list = parameters.ToList();
             var kvp = GetReservedParameter(list, reserved);
             list.Remove(kvp);
@@ -206,7 +253,7 @@ namespace LibAzyotter.Internal
 
         internal static ListedResponse<T> AccessParameterReservedApiArray<T>(this TokensBase t, MethodType m, string uri, string reserved, IEnumerable<KeyValuePair<string, object>> parameters)
         {
-            if(parameters == null) throw new ArgumentNullException("parameters");
+            if(parameters == null) throw new ArgumentNullException(nameof(parameters));
             var list = parameters.ToList();
             var kvp = GetReservedParameter(list, reserved);
             list.Remove(kvp);
@@ -217,7 +264,7 @@ namespace LibAzyotter.Internal
 #if !NET35
         internal static Task<T> AccessParameterReservedApiAsync<T>(this TwitterClient t, HttpMethod m, string uri, string reserved, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
-            if(parameters == null) throw new ArgumentNullException("parameters");
+            if(parameters == null) throw new ArgumentNullException(nameof(parameters));
             var list = parameters.ToList();
             var kvp = GetReservedParameter(list, reserved);
             list.Remove(kvp);
@@ -226,7 +273,7 @@ namespace LibAzyotter.Internal
 
         internal static Task<ListedResponse<T>> AccessParameterReservedApiArrayAsync<T>(this TwitterClient t, HttpMethod m, string uri, string reserved, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
-            if(parameters == null) throw new ArgumentNullException("parameters");
+            if(parameters == null) throw new ArgumentNullException(nameof(parameters));
             var list = parameters.ToList();
             var kvp = GetReservedParameter(list, reserved);
             list.Remove(kvp);

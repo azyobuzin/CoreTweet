@@ -1,50 +1,75 @@
+MONO_PATH?=/usr/bin
+
+EX_NUGET:=ExternalDependencies/nuget/bin/nuget
+EX_DOXYGEN:=ExternalDependencies/doxygen/bin/doxygen
+
+XBUILD?=$(MONO_PATH)/xbuild
+MONO?=$(MONO_PATH)/mono
+GIT?=$(shell which git)
+
+NUGET?=$(EX_NUGET)
+DOXYGEN?=$(shell hash doxygen 2>/dev/null || echo $(EX_DOXYGEN) && which doxygen)
+
+REST_APIS_GEN:=RestApisGen/bin/RestApisGen.exe
+
 all: binary docs ;
 
-binary: nuget-packages-restore
-	xbuild CoreTweet-Mono.sln /p:Configuration=Release
+binary: nuget-packages-restore rest-apis
+	$(XBUILD) CoreTweet-Mono.sln /p:Configuration=Release
 
 docs: external-tools binary
-	if hash "doxygen" 2> /dev/null; then \
-	    doxygen ; \
-	else \
-	    ExternalDependencies/doxygen/bin/doxygen ; \
-	fi
+	$(DOXYGEN)
 
 # External tools
 
-external-tools: ExternalDependencies/doxygen/bin/doxygen ExternalDependencies/nuget/bin/nuget;
+external-tools: nuget doxygen ;
+
+nuget: $(NUGET) ;
+doxygen: $(DOXYGEN) ;
 
 submodule:
-	git submodule update --init --recursive
+	$(GIT) submodule update --init --recursive
 
-ExternalDependencies/doxygen/bin/doxygen: submodule
-	hash doxygen 2>/dev/null || { cd ExternalDependencies/doxygen && ./configure && make; }
+$(EX_DOXYGEN): submodule
+	cd ExternalDependencies/doxygen && ./configure && $(MAKE)
 
-ExternalDependencies/nuget/bin/nuget: submodule
-	cd ExternalDependencies/nuget && make
+$(EX_NUGET): submodule
+	cd ExternalDependencies/nuget && $(MAKE)
 
 # NuGet
 
 nuget-packages-restore: external-tools
-	[ -f packages/repositories.config ] || \
+	[ -d packages ] || \
 	    for i in CoreTweet*/; do \
 	        cd $$i ; \
-	        ../ExternalDependencies/nuget/bin/nuget restore -ConfigFile packages.config -PackagesDirectory ../packages ; \
+	        ../$(NUGET) restore -ConfigFile packages.config -PackagesDirectory ../packages ; \
 	        cd .. ; \
 	    done
+
+# RestApis
+
+rest-apis: CoreTweet.Shared/RestApis.cs ;
+
+CoreTweet.Shared/RestApis.cs: $(REST_APIS_GEN)
+	$(MONO) $(REST_APIS_GEN)
+
+$(REST_APIS_GEN):
+	$(XBUILD) RestApisGen/RestApisGen.csproj /p:Configuration=Debug
 
 # Clean
 
 clean:
-	rm -rf Binary/Nightly
+	$(RM) -rf Release
+	$(RM) CoreTweet.Shared/RestApis.cs
+	$(RM) CoreTweet.FSharp/ParameterRecords.fs
 
 # Nonfree
 
 all-nonfree: binary-nonfree docs package-nonfree ;
 
 binary-nonfree: nuget-packages-restore
-	xbuild CoreTweet-All.sln /p:Configuration=Release
+	$(XBUILD) CoreTweet-All.sln /p:Configuration=Release
 
 package-nonfree: external-tools binary-nonfree nuspec-nonfree
-	ExternalDependencies/nuget/bin/nuget pack CoreTweet.nuspec -OutputDirectory Release
-	ExternalDependencies/nuget/bin/nuget pack CoreTweet.Streaming.Reactive.nuspec -OutputDirectory Release
+	$(NUGET) pack CoreTweet.nuspec -OutputDirectory Release
+	$(NUGET) pack CoreTweet.Streaming.Reactive.nuspec -OutputDirectory Release

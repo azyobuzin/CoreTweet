@@ -1,7 +1,7 @@
 // The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2014 lambdalice
+// Copyright (c) 2013-2015 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -75,9 +75,7 @@ namespace LibAzyotter
         {
             get
             {
-                return currentUserRetweetDic != null
-                    ? (long?)currentUserRetweetDic["id"]
-                    : null;
+                return (long?)currentUserRetweetDic?["id"];
             }
             set
             {
@@ -146,6 +144,13 @@ namespace LibAzyotter
         /// </summary>
         [JsonProperty("in_reply_to_user_id")]
         public long? InReplyToUserId { get; set; }
+
+        /// <summary>
+        /// <para>Gets or sets a value that determines if the Tweet is a quoted status.</para>
+        /// <para>Nullable.</para>
+        /// </summary>
+        [JsonProperty("is_quoted_status")]
+        public bool? IsQuotedStatus { get; set; }
 
         /// <summary>
         /// <para>Gets or sets the BCP 47 language identifier.</para>
@@ -333,24 +338,12 @@ namespace LibAzyotter
         /// <summary>
         /// Gets or sets the longtitude of the location.
         /// </summary>
-        public double Longtitude
-        {
-            get
-            {
-                return _coordinates[0];
-            }
-        }
+        public double Longtitude => this._coordinates[0];
 
         /// <summary>
         /// Gets or sets the latitude of the location.
         /// </summary>
-        public double Latitude
-        {
-            get
-            {
-                return _coordinates[1];
-            }
-        }
+        public double Latitude => this._coordinates[1];
 
         [JsonProperty("coordinates")]
         double[] _coordinates { get; set; }
@@ -491,33 +484,18 @@ namespace LibAzyotter
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
         /// <returns>The element at the specified index.</returns>
-        public Status this[int index]
-        {
-            get
-            {
-                return this.statuses[index];
-            }
-        }
+        public Status this[int index] => this.statuses[index];
 
         /// <summary>
         /// Gets the number of elements actually contained in the <see cref="SearchResult"/>.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return this.statuses.Count;
-            }
-        }
+        public int Count => this.statuses.Count;
 
         /// <summary>
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
         /// <returns>An IEnumerator object that can be used to iterate through the collection.</returns>
-        public IEnumerator<Status> GetEnumerator()
-        {
-            return this.statuses.GetEnumerator();
-        }
+        public IEnumerator<Status> GetEnumerator() => this.statuses.GetEnumerator();
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {

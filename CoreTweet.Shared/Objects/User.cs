@@ -1,7 +1,7 @@
 // The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2014 lambdalice
+// Copyright (c) 2013-2015 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 using System;
 using LibAzyotter.Internal;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace LibAzyotter
 {
@@ -173,15 +172,13 @@ namespace LibAzyotter
         /// Gets or sets a HTTP-based URL pointing to the background image the user has uploaded for their profile.
         /// </summary>
         [JsonProperty("profile_background_image_url")]
-        [JsonConverter(typeof(UriConverter))]
-        public Uri ProfileBackgroundImageUrl { get; set; }
+        public string ProfileBackgroundImageUrl { get; set; }
 
         /// <summary>
         /// Gets or sets a HTTPS-based URL pointing to the background image the user has uploaded for their profile.
         /// </summary>
         [JsonProperty("profile_background_image_url_https")]
-        [JsonConverter(typeof(UriConverter))]
-        public Uri ProfileBackgroundImageUrlHttps { get; set; }
+        public string ProfileBackgroundImageUrlHttps { get; set; }
 
         /// <summary>
         /// Gets or sets a value that determines if the user's <see cref="ProfileBackgroundImageUrl"/> should be tiled when displayed.
@@ -193,22 +190,19 @@ namespace LibAzyotter
         /// Gets or sets a HTTPS-based URL pointing to the standard web representation of the user's uploaded profile banner. By adding a final path element of the URL, you can obtain different image sizes optimized for specific displays. In the future, an API method will be provided to serve these URLs so that you need not modify the original URL. For size variations, please see User Profile Images and Banners.
         /// </summary>
         [JsonProperty("profile_banner_url")]
-        [JsonConverter(typeof(UriConverter))]
-        public Uri ProfileBannerUrl { get; set; }
+        public string ProfileBannerUrl { get; set; }
 
         /// <summary>
         /// Gets or sets a HTTP-based URL pointing to the user's avatar image. See User Profile Images and Banners.
         /// </summary>
         [JsonProperty("profile_image_url")]
-        [JsonConverter(typeof(UriConverter))]
-        public Uri ProfileImageUrl { get; set; }
+        public string ProfileImageUrl { get; set; }
 
         /// <summary>
         /// Gets or sets a HTTPS-based URL pointing to the user's avatar image.
         /// </summary>
         [JsonProperty("profile_image_url_https")]
-        [JsonConverter(typeof(UriConverter))]
-        public Uri ProfileImageUrlHttps { get; set; }
+        public string ProfileImageUrlHttps { get; set; }
 
         /// <summary>
         /// Gets or sets the hexadecimal color the user has chosen to display links with in their Twitter UI.
@@ -516,13 +510,13 @@ namespace LibAzyotter
         /// Gets or sets the slug of the category.
         /// </summary>
         [JsonProperty("slug")]
-        public string Slug{ get; set; }
+        public string Slug { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the category.
         /// </summary>
         [JsonProperty("size")]
-        public int Size{ get; set; }
+        public int Size { get; set; }
 
         /// <summary>
         /// Gets or sets the users in this category.
@@ -620,8 +614,7 @@ namespace LibAzyotter
         /// Gets or sets the URL of the size.
         /// </summary>
         [JsonProperty("url")]
-        [JsonConverter(typeof(UriConverter))]
-        public Uri Url { get; set; }
+        public string Url { get; set; }
     }
 
     /// <summary>

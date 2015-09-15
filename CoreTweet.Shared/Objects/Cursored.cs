@@ -1,7 +1,7 @@
 // The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2014 lambdalice
+// Copyright (c) 2013-2015 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -76,24 +76,12 @@ namespace LibAzyotter
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
         /// <returns>The element at the specified index.</returns>
-        public T this[int index]
-        {
-            get
-            {
-                return this.Result[index];
-            }
-        }
+        public T this[int index] => this.Result[index];
 
         /// <summary>
         /// Gets the number of elements actually contained in the <see cref="Cursored&lt;T&gt;"/>.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return this.Result.Length;
-            }
-        }
+        public int Count => this.Result.Length;
 
         /// <summary>
         /// Gets or sets the rate limit of the response.
@@ -131,7 +119,7 @@ namespace LibAzyotter
             return EnumerateImpl(tokens, apiName, mode, parameters);
         }
 
-        internal static IEnumerable<T> Enumerate<TV>(TokensBase tokens, string apiName, EnumerateMode mode, TV parameters)
+        internal static IEnumerable<T> Enumerate(TokensBase tokens, string apiName, EnumerateMode mode, object parameters)
         {
             var p = InternalUtils.ResolveObject(parameters);
             return EnumerateImpl(tokens, apiName, mode, p);

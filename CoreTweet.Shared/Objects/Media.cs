@@ -1,7 +1,7 @@
 ﻿// The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2014 lambdalice
+// Copyright (c) 2013-2015 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,11 +31,14 @@ namespace LibAzyotter
     /// </summary>
     public class MediaUploadResult : CoreBase, ITwitterResponse
     {
+        [JsonProperty("expires_after_secs")]
+        public int ExpiresAfterSecs { get; set; }
+
         /// <summary>
-        /// Gets or sets the data of the media.
+        /// Gets or sets the data of the image.
         /// </summary>
         [JsonProperty("image")]
-        public Image Image { get; set; }
+        public UploadedImage Image { get; set; }
 
         /// <summary>
         /// Gets or sets the ID of the media.
@@ -48,6 +51,12 @@ namespace LibAzyotter
         /// </summary>
         [JsonProperty("size")]
         public long Size { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data of the video.
+        /// </summary>
+        [JsonProperty("video")]
+        public UploadedVideo Video { get; set; }
 
         /// <summary>
         /// Gets or sets the rate limit of the response.
@@ -70,9 +79,9 @@ namespace LibAzyotter
     }
 
     /// <summary>
-    /// Represents the detail data of the uploaded media.
+    /// Represents the detail data of the uploaded image.
     /// </summary>
-    public class Image : CoreBase
+    public class UploadedImage : CoreBase
     {
         /// <summary>
         /// Gets or sets the width of the image.
@@ -91,5 +100,32 @@ namespace LibAzyotter
         /// </summary>
         [JsonProperty("image_type")]
         public string ImageType { get; set; }
+    }
+
+    /// <summary>
+    /// Represents the detail data of the uploaded video.
+    /// </summary>
+    public class UploadedVideo : CoreBase
+    {
+        /// <summary>
+        /// Gets or sets the MIME type of the video.
+        /// </summary>
+        [JsonProperty("video_type")]
+        public string VideoType { get; set; }
+    }
+
+    /// <summary>
+    /// Provides the type of media to upload.
+    /// </summary>
+    public enum UploadMediaType
+    {
+        /// <summary>
+        /// An image file.
+        /// </summary>
+        Image,
+        /// <summary>
+        /// A video file.
+        /// </summary>
+        Video
     }
 }

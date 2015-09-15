@@ -1,7 +1,7 @@
 // The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2014 lambdalice
+// Copyright (c) 2013-2015 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
 using LibAzyotter.Internal;
 using Newtonsoft.Json;
 
@@ -48,28 +47,25 @@ namespace LibAzyotter
         /// Gets or sets the URL of the author.
         /// </summary>
         [JsonProperty("author_url")]
-        [JsonConverter(typeof(UriConverter))]
-        public Uri AuthorUrl { get; set; }
+        public string AuthorUrl { get; set; }
 
         /// <summary>
         /// Gets or sets the URL of the provider.
         /// </summary>
         [JsonProperty("provider_url")]
-        [JsonConverter(typeof(UriConverter))]
-        public Uri ProviderUrl{ get; set; }
+        public string ProviderUrl { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the provider.
         /// </summary>
         [JsonProperty("provider_name")]
-        public string ProviderName{ get; set; }
+        public string ProviderName { get; set; }
 
         /// <summary>
         /// Gets or sets the URL.
         /// </summary>
         [JsonProperty("url")]
-        [JsonConverter(typeof(UriConverter))]
-        public Uri Url{ get; set; }
+        public string Url { get; set; }
 
         /// <summary>
         /// Gets or sets the version.
@@ -81,25 +77,25 @@ namespace LibAzyotter
         /// Gets or sets the type.
         /// </summary>
         [JsonProperty("type")]
-        public string Type{ get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// Gets or sets the height of the embed object.
         /// </summary>
         [JsonProperty("height")]
-        public int? Height{ get; set; }
+        public int? Height { get; set; }
 
         /// <summary>
         /// Gets or sets the width of the embed object.
         /// </summary>
         [JsonProperty("width")]
-        public int? Width{ get; set; }
+        public int? Width { get; set; }
 
         /// <summary>
         /// Gets or sets the age of the cache.
         /// </summary>
         [JsonProperty("cache_age")]
-        public string CacheAge{ get; set; }
+        public string CacheAge { get; set; }
 
         /// <summary>
         /// Gets or sets the rate limit of the response.

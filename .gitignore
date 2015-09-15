@@ -20,6 +20,7 @@ TestResults
 [Dd]ebug/
 [Rr]elease/
 x64/
+*.bak
 *_i.c
 *_p.c
 *.ilk
@@ -62,7 +63,7 @@ _ReSharper*
 *.ncrunch*
 .*crunch*.local.xml
 
-# Installshield output folder 
+# Installshield output folder
 [Ee]xpress
 
 # DocProject is a documentation generator add-in
@@ -119,6 +120,10 @@ Backup*/
 UpgradeLog*.XML
 
 # Debug file
-
+CoreTweetTest*/
 tokens.xml
 *.nupkg
+
+# T4
+/CoreTweet.Shared/RestApis.cs
+/CoreTweet.FSharp/ParameterRecords.fs

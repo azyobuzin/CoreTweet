@@ -1,7 +1,7 @@
 ﻿// The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2014 lambdalice
+// Copyright (c) 2013-2015 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -151,13 +151,8 @@ namespace LibAzyotter.Internal
             var inner = Sha1(k.Zip(ipad, (x, y) => (byte)(x ^ y)).Concat(message ?? Enumerable.Empty<byte>()));
             return Sha1(k.Zip(opad, (x, y) => (byte)(x ^ y)).Concat(inner));
 #else
-            var keyArray = key as byte[];
-            if(keyArray == null) keyArray = key.ToArray();
-            var messageArray = message as byte[];
-                if(messageArray == null)
-                    messageArray = message != null
-                        ? message.ToArray()
-                        : new byte[] { };
+            var keyArray = key as byte[] ?? key.ToArray();
+            var messageArray = message as byte[] ?? (message?.ToArray() ?? new byte[] { });
 #if WIN_RT
             var prov = MacAlgorithmProvider.OpenAlgorithm(MacAlgorithmNames.HmacSha1);
             var buffer = CryptographicEngine.Sign(
