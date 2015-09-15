@@ -1,29 +1,18 @@
-version: 1.0.{build}
+version: 1.1.0.{build}
 
-os: Visual Studio 2015
+install:
+- ps: >-
+    &{$Branch='dev';iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.ps1'))}
 
-assembly_info:
-  patch: true
-  file: CoreTweet.Shared\AssemblyVersion.cs
-  assembly_version: '{version}'
-  assembly_file_version: '{version}'
-
-nuget:
-  account_feed: true
-  project_feed: true
-  disable_publish_on_pr: true
-
-configuration: Release
-
-build:
-  project: LibAzyotter.sln
-  parallel: true
+    C:\Users\appveyor\.dnx\bin\dnvm.ps1 upgrade -Unstable
 
 before_build:
-  - ps: nuget restore LibAzyotter.sln
-  - ps: .\build.ps1 -ExecuteTemplate
+- dnu restore
+- dnx -p .\CITool run .\LibAzyotter\project.json
 
-after_build:
-  - nuget pack LibAzyotter.nuspec -Version %APPVEYOR_BUILD_VERSION%
-  - nuget pack LibAzyotter.Reactive.nuspec -Version %APPVEYOR_BUILD_VERSION%
-  - ps: Get-ChildItem .\*.nupkg | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
+build_script:
+- dnu pack .\LibAzyotter --configuration Release
+
+artifacts:
+- path: LibAzyotter\bin\Release
+- path: LibAzyotter\bin\Release\*.nupkg
