@@ -16,8 +16,6 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LibAzyotter", "LibAzyotter\
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "RestApisGen", "RestApisGen\RestApisGen.xproj", "{88F19C58-8207-4A5C-921A-0E0188BE4559}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LibAzyotter.Reactive", "LibAzyotter.Reactive\LibAzyotter.Reactive.xproj", "{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CoreTweet.Streaming.Reactive", "CoreTweet.Streaming.Reactive\CoreTweet.Streaming.Reactive.shproj", "{B44E2AA4-81D8-4B62-ACFE-462B2C066D85}"
 EndProject
 Global
@@ -68,22 +66,6 @@ Global
 		{88F19C58-8207-4A5C-921A-0E0188BE4559}.Release|x64.Build.0 = Release|Any CPU
 		{88F19C58-8207-4A5C-921A-0E0188BE4559}.Release|x86.ActiveCfg = Release|Any CPU
 		{88F19C58-8207-4A5C-921A-0E0188BE4559}.Release|x86.Build.0 = Release|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Debug|ARM.Build.0 = Debug|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Debug|x64.Build.0 = Debug|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Debug|x86.Build.0 = Debug|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Release|ARM.ActiveCfg = Release|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Release|ARM.Build.0 = Release|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Release|x64.ActiveCfg = Release|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Release|x64.Build.0 = Release|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Release|x86.ActiveCfg = Release|Any CPU
-		{5A31F29C-F69E-44F8-9E55-60C92B07FFCD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

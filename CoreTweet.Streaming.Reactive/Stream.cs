@@ -26,60 +26,31 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
-using LibAzyotter.Api;
 using LibAzyotter.Internal;
-using static LibAzyotter.Api.StreamingApi;
 
-namespace LibAzyotter
+namespace LibAzyotter.Api
 {
-    /// <summary>
-    /// Extensions for Reactive Extension(Rx).
-    /// </summary>
-    public static class StreamingExtension
+    partial class StreamingApi
     {
-        private static IObservable<StreamingMessage> AccessStreamingApiAsObservableImpl(StreamingApi e, StreamingType type, IEnumerable<KeyValuePair<string, object>> parameters)
+        private IObservable<StreamingMessage> AccessStreamingApiAsObservableImpl(StreamingType type, IEnumerable<KeyValuePair<string, object>> parameters)
         {
-            return Observable.Create<StreamingMessage>(async (observer, cancel) =>
-            {
-                var t = e.GetUrl(type);
-                var stream = await
-                    (await e.Client.InternalSendRequestAsync(GetMethodType(type), t.Item1, TwitterClient.ApiVersion, t.Item2, parameters, null, cancel).ConfigureAwait(false))
-                        .Content.ReadAsStreamAsync().ConfigureAwait(false);
-                using (var reader = new StreamReader(stream))
-                using (cancel.Register(reader.Dispose))
-                {
-                    while (!reader.EndOfStream)
-                    {
-                        var s = await reader.ReadLineAsync().ConfigureAwait(false);
-                        if (string.IsNullOrEmpty(s)) continue;
-                        try
-                        {
-                            observer.OnNext(StreamingMessage.Parse(s));
-                        }
-                        catch (ParsingException ex)
-                        {
-                            observer.OnNext(RawJsonMessage.Create(s, ex));
-                        }
-                    }
-                }
-            });
+            return new StreamingObservable(this.Client, type, parameters);
         }
 
-        private static IObservable<StreamingMessage> AccessStreamingApiAsObservable(StreamingApi e, StreamingType type, Expression<Func<string, object>>[] parameters)
+        private IObservable<StreamingMessage> AccessStreamingApiAsObservable(StreamingType type, Expression<Func<string, object>>[] parameters)
         {
-            return AccessStreamingApiAsObservableImpl(e, type, InternalUtils.ExpressionsToDictionary(parameters));
+            return AccessStreamingApiAsObservableImpl(type, InternalUtils.ExpressionsToDictionary(parameters));
         }
 
-        private static IObservable<StreamingMessage> AccessStreamingApiAsObservable(StreamingApi e, StreamingType type, IDictionary<string, object> parameters)
+        private IObservable<StreamingMessage> AccessStreamingApiAsObservable(StreamingType type, IDictionary<string, object> parameters)
         {
-            return AccessStreamingApiAsObservableImpl(e, type, parameters);
+            return AccessStreamingApiAsObservableImpl(type, parameters);
         }
 
-        private static IObservable<StreamingMessage> AccessStreamingApiAsObservable(StreamingApi e, StreamingType type, object parameters)
+        private IObservable<StreamingMessage> AccessStreamingApiAsObservable(StreamingType type, object parameters)
         {
-            return AccessStreamingApiAsObservableImpl(e, type, InternalUtils.ResolveObject(parameters));
+            return AccessStreamingApiAsObservableImpl(type, InternalUtils.ResolveObject(parameters));
         }
 
         /// <summary>
@@ -92,12 +63,11 @@ namespace LibAzyotter
         /// <para>- <c>string</c> track (optional)</para>
         /// <para>- <c>IEnumerable&lt;double&gt;</c> locations (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> UserAsObservable(this StreamingApi e, params Expression<Func<string, object>>[] parameters)
+        public IObservable<StreamingMessage> UserAsObservable(params Expression<Func<string, object>>[] parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.User, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.User, parameters);
         }
 
         /// <summary>
@@ -110,12 +80,11 @@ namespace LibAzyotter
         /// <para>- <c>string</c> track (optional)</para>
         /// <para>- <c>IEnumerable&lt;double&gt;</c> locations (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> UserAsObservable(this StreamingApi e, IDictionary<string, object> parameters)
+        public IObservable<StreamingMessage> UserAsObservable(IDictionary<string, object> parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.User, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.User, parameters);
         }
 
         /// <summary>
@@ -128,25 +97,23 @@ namespace LibAzyotter
         /// <para>- <c>string</c> track (optional)</para>
         /// <para>- <c>IEnumerable&lt;double&gt;</c> locations (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> UserAsObservable(this StreamingApi e, object parameters)
+        public IObservable<StreamingMessage> UserAsObservable(object parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.User, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.User, parameters);
         }
 
         /// <summary>
         /// Streams messages for a single user.
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="stall_warnings">Specifies whether stall warnings should be delivered.</param>
         /// <param name="with">Specifies whether to return information for just the authenticating user, or include messages from accounts the user follows.</param>
         /// <param name="replies">Specifies whether to return additional &#64;replies.</param>
         /// <param name="track">Includes additional Tweets matching the specified keywords. Phrases of keywords are specified by a comma-separated list.</param>
         /// <param name="locations">Includes additional Tweets falling within the specified bounding boxes.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> UserAsObservable(this StreamingApi e, bool? stall_warnings = null, string with = null, string replies = null, string track = null, IEnumerable<double> locations = null)
+        public IObservable<StreamingMessage> UserAsObservable(bool? stall_warnings = null, string with = null, string replies = null, string track = null, IEnumerable<double> locations = null)
         {
             var parameters = new Dictionary<string, object>();
             if (stall_warnings != null) parameters.Add(nameof(stall_warnings), stall_warnings);
@@ -154,7 +121,7 @@ namespace LibAzyotter
             if (replies != null) parameters.Add(nameof(replies), replies);
             if (track != null) parameters.Add(nameof(track), track);
             if (locations != null) parameters.Add(nameof(locations), locations);
-            return AccessStreamingApiAsObservableImpl(e, StreamingType.User, parameters);
+            return AccessStreamingApiAsObservableImpl(StreamingType.User, parameters);
         }
 
         /// <summary>
@@ -166,12 +133,11 @@ namespace LibAzyotter
         /// <para>- <c>string</c> with (optional)</para>
         /// <para>- <c>string</c> replies (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> SiteAsObservable(this StreamingApi e, params Expression<Func<string, object>>[] parameters)
+        public IObservable<StreamingMessage> SiteAsObservable(params Expression<Func<string, object>>[] parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.Site, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.Site, parameters);
         }
 
         /// <summary>
@@ -183,12 +149,11 @@ namespace LibAzyotter
         /// <para>- <c>string</c> with (optional)</para>
         /// <para>- <c>string</c> replies (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> SiteAsObservable(this StreamingApi e, IDictionary<string, object> parameters)
+        public IObservable<StreamingMessage> SiteAsObservable(IDictionary<string, object> parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.Site, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.Site, parameters);
         }
 
         /// <summary>
@@ -200,24 +165,22 @@ namespace LibAzyotter
         /// <para>- <c>string</c> with (optional)</para>
         /// <para>- <c>string</c> replies (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> SiteAsObservable(this StreamingApi e, object parameters)
+        public IObservable<StreamingMessage> SiteAsObservable(object parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.Site, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.Site, parameters);
         }
 
         /// <summary>
         /// Streams messages for a set of users.
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="follow">A comma separated list of user IDs, indicating the users to return statuses for in the stream.</param>
         /// <param name="stall_warnings">Specifies whether stall warnings should be delivered.</param>
         /// <param name="with">Specifies whether to return information for just the users specified in the follow parameter, or include messages from accounts they follow.</param>
         /// <param name="replies">Specifies whether to return additional &#64;replies.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> SiteAsObservable(this StreamingApi e, IEnumerable<long> follow, bool? stall_warnings = null, string with = null, string replies = null)
+        public IObservable<StreamingMessage> SiteAsObservable(IEnumerable<long> follow, bool? stall_warnings = null, string with = null, string replies = null)
         {
             if (follow == null) throw new ArgumentNullException(nameof(follow));
             var parameters = new Dictionary<string, object>();
@@ -225,7 +188,7 @@ namespace LibAzyotter
             if (stall_warnings != null) parameters.Add(nameof(stall_warnings), stall_warnings);
             if (with != null) parameters.Add(nameof(with), with);
             if (replies != null) parameters.Add(nameof(replies), replies);
-            return AccessStreamingApiAsObservableImpl(e, StreamingType.Site, parameters);
+            return AccessStreamingApiAsObservableImpl(StreamingType.Site, parameters);
         }
 
         /// <summary>
@@ -239,12 +202,11 @@ namespace LibAzyotter
         /// <para>- <c>string</c> delimited (optional, not affects CoreTweet)</para>
         /// <para>- <c>bool</c> stall_warnings (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> FilterAsObservable(this StreamingApi e, params Expression<Func<string, object>>[] parameters)
+        public IObservable<StreamingMessage> FilterAsObservable(params Expression<Func<string, object>>[] parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.Filter, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.Filter, parameters);
         }
 
         /// <summary>
@@ -258,12 +220,11 @@ namespace LibAzyotter
         /// <para>- <c>string</c> delimited (optional, not affects CoreTweet)</para>
         /// <para>- <c>bool</c> stall_warnings (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> FilterAsObservable(this StreamingApi e, IDictionary<string, object> parameters)
+        public IObservable<StreamingMessage> FilterAsObservable(IDictionary<string, object> parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.Filter, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.Filter, parameters);
         }
 
         /// <summary>
@@ -277,12 +238,11 @@ namespace LibAzyotter
         /// <para>- <c>string</c> delimited (optional, not affects CoreTweet)</para>
         /// <para>- <c>bool</c> stall_warnings (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> FilterAsObservable(this StreamingApi e, object parameters)
+        public IObservable<StreamingMessage> FilterAsObservable(object parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.Filter, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.Filter, parameters);
         }
 
         /// <summary>
@@ -290,13 +250,12 @@ namespace LibAzyotter
         /// <para>Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API.</para>
         /// <para>Note: At least one predicate parameter (follow, locations, or track) must be specified.</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="follow">A comma separated list of user IDs, indicating the users to return statuses for in the stream.</param>
         /// <param name="track">Keywords to track. Phrases of keywords are specified by a comma-separated list.</param>
         /// <param name="locations">Specifies a set of bounding boxes to track.</param>
         /// <param name="stall_warnings">Specifies whether stall warnings should be delivered.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> FilterAsObservable(this StreamingApi e, IEnumerable<long> follow = null, string track = null, IEnumerable<double> locations = null, bool? stall_warnings = null)
+        public IObservable<StreamingMessage> FilterAsObservable(IEnumerable<long> follow = null, string track = null, IEnumerable<double> locations = null, bool? stall_warnings = null)
         {
             if (follow == null && track == null && locations == null)
                 throw new ArgumentException("At least one predicate parameter (follow, locations, or track) must be specified.");
@@ -305,7 +264,7 @@ namespace LibAzyotter
             if (track != null) parameters.Add(nameof(track), track);
             if (locations != null) parameters.Add(nameof(locations), locations);
             if (stall_warnings != null) parameters.Add(nameof(stall_warnings), stall_warnings);
-            return AccessStreamingApiAsObservableImpl(e, StreamingType.Filter, parameters);
+            return AccessStreamingApiAsObservableImpl(StreamingType.Filter, parameters);
         }
 
         /// <summary>
@@ -315,12 +274,11 @@ namespace LibAzyotter
         /// <para>- <c>string</c> delimited (optional, not affects CoreTweet)</para>
         /// <para>- <c>bool</c> stall_warnings (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> SampleAsObservable(this StreamingApi e, params Expression<Func<string, object>>[] parameters)
+        public IObservable<StreamingMessage> SampleAsObservable(params Expression<Func<string, object>>[] parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.Sample, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.Sample, parameters);
         }
 
         /// <summary>
@@ -330,12 +288,11 @@ namespace LibAzyotter
         /// <para>- <c>string</c> delimited (optional, not affects CoreTweet)</para>
         /// <para>- <c>bool</c> stall_warnings (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> SampleAsObservable(this StreamingApi e, IDictionary<string, object> parameters)
+        public IObservable<StreamingMessage> SampleAsObservable(IDictionary<string, object> parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.Sample, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.Sample, parameters);
         }
 
         /// <summary>
@@ -345,26 +302,24 @@ namespace LibAzyotter
         /// <para>- <c>string</c> delimited (optional, not affects CoreTweet)</para>
         /// <para>- <c>bool</c> stall_warnings (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> SampleAsObservable(this StreamingApi e, object parameters)
+        public IObservable<StreamingMessage> SampleAsObservable(object parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.Sample, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.Sample, parameters);
         }
 
         /// <summary>
         /// Returns a small random sample of all public statuses.
         /// <para>The Tweets returned by the default access level are the same, so if two different clients connect to this endpoint, they will see the same Tweets.</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="stall_warnings">Specifies whether stall warnings should be delivered.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> SampleAsObservable(this StreamingApi e, bool? stall_warnings = null)
+        public IObservable<StreamingMessage> SampleAsObservable(bool? stall_warnings = null)
         {
             var parameters = new Dictionary<string, object>();
             if (stall_warnings != null) parameters.Add(nameof(stall_warnings), stall_warnings);
-            return AccessStreamingApiAsObservableImpl(e, StreamingType.Sample, parameters);
+            return AccessStreamingApiAsObservableImpl(StreamingType.Sample, parameters);
         }
 
         /// <summary>
@@ -375,12 +330,11 @@ namespace LibAzyotter
         /// <para>- <c>string</c> delimited (optional, not affects CoreTweet)</para>
         /// <para>- <c>bool</c> stall_warnings (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> FirehoseAsObservable(this StreamingApi e, params Expression<Func<string, object>>[] parameters)
+        public IObservable<StreamingMessage> FirehoseAsObservable(params Expression<Func<string, object>>[] parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.Firehose, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.Firehose, parameters);
         }
 
         /// <summary>
@@ -391,12 +345,11 @@ namespace LibAzyotter
         /// <para>- <c>string</c> delimited (optional, not affects CoreTweet)</para>
         /// <para>- <c>bool</c> stall_warnings (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> FirehoseAsObservable(this StreamingApi e, IDictionary<string, object> parameters)
+        public IObservable<StreamingMessage> FirehoseAsObservable(IDictionary<string, object> parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.Firehose, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.Firehose, parameters);
         }
 
         /// <summary>
@@ -407,28 +360,26 @@ namespace LibAzyotter
         /// <para>- <c>string</c> delimited (optional, not affects CoreTweet)</para>
         /// <para>- <c>bool</c> stall_warnings (optional)</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> FirehoseAsObservable(this StreamingApi e, object parameters)
+        public IObservable<StreamingMessage> FirehoseAsObservable(object parameters)
         {
-            return AccessStreamingApiAsObservable(e, StreamingType.Firehose, parameters);
+            return AccessStreamingApiAsObservable(StreamingType.Firehose, parameters);
         }
 
         /// <summary>
         /// Returns all public statuses. Few applications require this level of access.
         /// <para>Creative use of a combination of other resources and various access levels can satisfy nearly every application use case.</para>
         /// </summary>
-        /// <param name="e">The <see cref="StreamingApi"/> instance.</param>
         /// <param name="count">The number of messages to backfill.</param>
         /// <param name="stall_warnings">Specifies whether stall warnings should be delivered.</param>
         /// <returns>The stream messages.</returns>
-        public static IObservable<StreamingMessage> FirehoseAsObservable(this StreamingApi e, int? count = null, bool? stall_warnings = null)
+        public IObservable<StreamingMessage> FirehoseAsObservable(int? count = null, bool? stall_warnings = null)
         {
             var parameters = new Dictionary<string, object>();
             if (count != null) parameters.Add(nameof(count), count);
             if (stall_warnings != null) parameters.Add(nameof(stall_warnings), stall_warnings);
-            return AccessStreamingApiAsObservableImpl(e, StreamingType.Firehose, parameters);
+            return AccessStreamingApiAsObservableImpl(StreamingType.Firehose, parameters);
         }
     }
 }

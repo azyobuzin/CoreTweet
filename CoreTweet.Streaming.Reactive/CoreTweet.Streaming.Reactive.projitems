@@ -9,7 +9,6 @@
     <Import_RootNamespace>CoreTweet.Streaming.Reactive</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Stream.cs" />
   </ItemGroup>
 </Project>

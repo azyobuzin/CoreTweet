@@ -67,7 +67,7 @@ namespace LibAzyotter.Api
     /// <summary>
     /// Represents the wrapper for the Twitter Streaming API.
     /// </summary>
-    public class StreamingApi : ApiProviderBase
+    public partial class StreamingApi : ApiProviderBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamingApi"/> class with a specified token.
@@ -75,7 +75,7 @@ namespace LibAzyotter.Api
         /// <param name="tokens"></param>
         protected internal StreamingApi(TwitterClient tokens) : base(tokens) { }
 
-        internal Tuple<ApiHost, string> GetUrl(StreamingType type)
+        internal static Tuple<ApiHost, string> GetUrl(StreamingType type)
         {
             switch(type)
             {
