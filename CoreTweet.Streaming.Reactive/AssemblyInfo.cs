@@ -4,10 +4,10 @@ using System.Reflection;
 // Change them to the values specific to your project.
 
 [assembly: AssemblyTitle("LibAzyotter.Reactive")]
-[assembly: AssemblyDescription("A fork of CoreTweet")]
-[assembly: AssemblyCompany("CoreTweet Development Team")]
+[assembly: AssemblyDescription("Streaming APIs support for LibAzyotter")]
+[assembly: AssemblyCompany("azyobuzin, CoreTweet Development Team")]
 [assembly: AssemblyProduct("LibAzyotter")]
-[assembly: AssemblyCopyright("(c) 2014 lambdalice, (c) 2015 azyobuzin")]
+[assembly: AssemblyCopyright("(c) 2015 azyobuzin, (c) 2013-2015 CoreTweet Development Team")]
 [assembly: AssemblyTrademark("")]
 
 // The following attributes are used to specify the signing key for the assembly,
