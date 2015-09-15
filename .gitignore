@@ -15,6 +15,7 @@ TestResults
 
 # Roslyn cache directories
 *.ide/
+.vs/
 
 # Build results
 [Dd]ebug/
@@ -85,6 +86,7 @@ publish
 # NuGet Packages Directory
 .nuget/
 packages
+project.lock.json
 
 # Windows Azure Build Output
 csx
@@ -122,7 +124,6 @@ UpgradeLog*.XML
 # Debug file
 CoreTweetTest*/
 tokens.xml
-*.nupkg
 
 # T4
 /CoreTweet.Shared/RestApis.cs

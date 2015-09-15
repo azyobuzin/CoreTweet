@@ -122,12 +122,11 @@ namespace LibAzyotter.Connection
 #endif
 
                     if (valueStream != null)
-                        content.Add(new StreamContent(valueStream), x.Key, fileName != null ? fileName : "file");
+                        content.Add(new StreamContent(valueStream), x.Key, fileName ?? "file");
                     else if (valueBytes != null)
                     {
-                        var valueByteArray = valueBytes as byte[];
-                        if (valueByteArray == null) valueByteArray = valueBytes.ToArray();
-                        content.Add(new ByteArrayContent(valueByteArray), x.Key, fileName != null ? fileName : "file");
+                        var valueByteArray = valueBytes as byte[] ?? valueBytes.ToArray();
+                        content.Add(new ByteArrayContent(valueByteArray), x.Key, fileName ?? "file");
                     }
                     else
                         content.Add(new StringContent(x.Value.ToString()), x.Key);

@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
-#if !(PCL || WIN_RT)
+#if NET45
 using System.Net.Security;
 #endif
 
@@ -41,7 +41,7 @@ namespace LibAzyotter.Connection
         public bool UseProxy { get; set; } = true;
         public ProductInfoHeaderValue UserAgent { get; set; } = new ProductInfoHeaderValue("LibAzyotter", "0.0");
 
-#if !(PCL || WIN_RT)
+#if NET45
         public int ReadWriteTimeout { get; set; } = 300000;
         public RemoteCertificateValidationCallback ServerCertificateValidationCallback { get; set; }
 #endif
@@ -54,7 +54,7 @@ namespace LibAzyotter.Connection
 
             var isStreaming = !(host == ApiHost.Api || host == ApiHost.Upload);
 
-#if !(PCL || WIN_RT)
+#if NET45
             var handler = new WebRequestHandler();
             handler.ReadWriteTimeout = isStreaming ? int.MaxValue : this.ReadWriteTimeout; // -1 is invalid
             handler.ServerCertificateValidationCallback = this.ServerCertificateValidationCallback;

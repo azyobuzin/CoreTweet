@@ -49,31 +49,33 @@ namespace LibAzyotter.Internal
 
             var type = t.GetType().GetTypeInfo();
 
-            if(type.GetCustomAttributes(typeof(TwitterParametersAttribute), false).Any())
+            if(type.CustomAttributes.Any(x => x.AttributeType == typeof(TwitterParametersAttribute)))
             {
                 var d = new Dictionary<string, object>();
 
                 foreach(var f in type.DeclaredFields.Where(x => x.IsPublic && !x.IsStatic))
                 {
-                    var attr = f.GetCustomAttributes(true).OfType<TwitterParameterAttribute>().FirstOrDefault();
+                    var attr = f.CustomAttributes.FirstOrDefault(x => x.AttributeType == typeof(TwitterParameterAttribute));
                     var value = f.GetValue(t);
                     if(attr != null && value != null)
                     {
-                        var defaultValue = attr.DefaultValue ?? GetDefaultValue(t.GetType());
+                        var name = (string)attr.ConstructorArguments[0].Value ?? f.Name;
+                        var defaultValue = attr.ConstructorArguments[1].Value ?? GetDefaultValue(t.GetType());
                         if(!value.Equals(defaultValue))
-                            d.Add(attr.Name ?? f.Name, value);
+                            d.Add(name, value);
                     }
                 }
 
                 foreach(var p in type.DeclaredProperties.Where(x => x.CanRead && x.GetMethod.IsPublic && !x.GetMethod.IsStatic))
                 {
-                    var attr = p.GetCustomAttributes(true).OfType<TwitterParameterAttribute>().FirstOrDefault();
+                    var attr = p.CustomAttributes.FirstOrDefault(x => x.AttributeType == typeof(TwitterParameterAttribute));
                     var value = p.GetValue(t, null);
                     if(attr != null && value != null)
                     {
-                        var defaultValue = attr.DefaultValue ?? GetDefaultValue(t.GetType());
-                        if(!value.Equals(defaultValue))
-                            d.Add(attr.Name ?? p.Name, value);
+                        var name = (string)attr.ConstructorArguments[0].Value ?? p.Name;
+                        var defaultValue = attr.ConstructorArguments[1].Value ?? GetDefaultValue(t.GetType());
+                        if (!value.Equals(defaultValue))
+                            d.Add(name, value);
                     }
                 }
 
@@ -127,7 +129,7 @@ namespace LibAzyotter.Internal
                     {
                         var xtype = x.GetType();
                         return new KeyValuePair<string, object>(
-#if true
+#if false
                             (string)xtype.GetRuntimeProperty("Item1").GetValue(x),
                             xtype.GetRuntimeProperty("Item2").GetValue(x)
 #else
@@ -149,7 +151,7 @@ namespace LibAzyotter.Internal
 
         private static IDictionary<string,object> AnnoToDictionary(object f)
         {
-            return f.GetType().GetRuntimeProperties()
+            return f.GetType().GetProperties()
                 .Where(x => x.CanRead && x.GetIndexParameters().Length == 0)
                 .Select(x => Tuple.Create(x.Name, x.GetMethod))
                 .Where(x => x.Item2.IsPublic && !x.Item2.IsStatic)

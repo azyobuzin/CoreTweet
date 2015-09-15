@@ -1,0 +1,39 @@
+﻿{
+  "version": "1.1-*",
+  "description": "The modern Twitter library, fork project of CoreTweet. The goal is, it has more flexible API structure.",
+  "authors": [ "azyobuzin", "CoreTweet Development Team" ],
+  "owners": [ "azyobuzin" ],
+  "tags": [ "Twitter" ],
+  "projectUrl": "https://github.com/azyobuzin/LibAzyotter",
+  "licenseUrl": "https://github.com/azyobuzin/LibAzyotter/blob/master/LICENSE",
+  "copyright": "(c) 2015 azyobuzin, (c) 2013-2015 CoreTweet Development Team",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/azyobuzin/LibAzyotter.git"
+  },
+  "compile": [ "../CoreTweet.Shared/**/*.cs" ],
+  "dependencies": {
+    "Newtonsoft.Json": "6.0.8"
+  },
+  "frameworks": {
+    "dotnet": {
+      "dependencies": {
+        "System.Collections": "4.0.10",
+        "System.Dynamic.Runtime": "4.0.10",
+        "System.IO.FileSystem": "4.0.0",
+        "System.Linq": "4.0.0",
+        "System.Linq.Expressions": "4.0.10",
+        "System.Net.Http": "4.0.0",
+        "System.Reflection.TypeExtensions": "4.0.0",
+        "System.Security.Cryptography.Algorithms": "4.0.0-beta-23225",
+        "System.Text.RegularExpressions": "4.0.10"
+      }
+    },
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Net.Http": "4.0.0.0",
+        "System.Net.Http.WebRequest": "4.0.0.0"
+      }
+    }
+  }
+}
