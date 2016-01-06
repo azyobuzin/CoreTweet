@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace RestApisGen
 {
-    static class RestApisCs
+    public static class RestApisCs
     {
         public static void Generate(IEnumerable<ApiParent> apis, TextWriter writer)
         {

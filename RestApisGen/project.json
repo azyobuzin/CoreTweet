@@ -9,11 +9,6 @@
     "type": "git",
     "url": "https://github.com/azyobuzin/LibAzyotter.git"
   },
-  "dependencies": {
-  },
-  "commands": {
-    "RestApisGen": "RestApisGen"
-  },
   "frameworks": {
     "dnx451": { },
     "dnxcore50": {

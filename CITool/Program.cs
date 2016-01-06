@@ -14,7 +14,7 @@ namespace CITool
             var projectFile = args[0];
 
             var j = JObject.Parse(File.ReadAllText(projectFile));
-            j["version"] = version;
+            j["version"] = version + "-*";
 
             File.WriteAllText(projectFile, j.ToString());
         }
