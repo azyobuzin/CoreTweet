@@ -1,7 +1,7 @@
 // The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2013-2015 CoreTweet Development Team
+// Copyright (c) 2013-2016 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -293,10 +293,11 @@ namespace LibAzyotter
     public class UserMentionEntity : Entity
     {
         /// <summary>
+        /// Nullable.
         /// Gets or sets the ID of the mentioned user.
         /// </summary>
         [JsonProperty("id")]
-        public long Id { get; set; }
+        public long? Id { get; set; }
 
         /// <summary>
         /// Gets or sets display name of the referenced user.
@@ -316,7 +317,7 @@ namespace LibAzyotter
         /// <returns>The ID of this instance.</returns>
         public override string ToString()
         {
-            return this.Id.ToString("D");
+            return this.Id?.ToString("D");
         }
     }
 }

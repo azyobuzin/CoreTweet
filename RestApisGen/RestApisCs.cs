@@ -21,8 +21,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using LibAzyotter.Internal;
 
-namespace LibAzyotter.Api
-{
+#pragma warning disable RECS0163
+namespace LibAzyotter.Api{
 ");
 
             var ind = new Indent(1);
@@ -34,7 +34,7 @@ namespace LibAzyotter.Api
                 writer.WriteLine(ind + "public partial class {0} : ApiProviderBase", i.Name);
                 writer.WriteLine(ind + "{");
                 ind.Inc();
-                writer.WriteLine(ind + "internal " + i.Name + " (TwitterClient e) : base(e) { }");
+                writer.WriteLine(ind + "internal " + i.Name + "(TwitterClient e) : base(e) { }");
                 writer.WriteLine("");
                 foreach (var j in i.Endpoints)
                 {

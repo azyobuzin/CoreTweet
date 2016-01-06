@@ -13,8 +13,7 @@ TestResults
 *.user
 *.sln.docstates
 
-# Roslyn cache directories
-*.ide/
+# Visual Studio 2015 cache/options directory
 .vs/
 
 # Build results
@@ -127,4 +126,3 @@ tokens.xml
 
 # T4
 /CoreTweet.Shared/RestApis.cs
-/CoreTweet.FSharp/ParameterRecords.fs

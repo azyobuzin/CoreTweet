@@ -1,7 +1,7 @@
 ﻿// The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2013-2015 CoreTweet Development Team
+// Copyright (c) 2013-2016 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -128,5 +128,29 @@ namespace LibAzyotter
                 return null;
             }
         }
+
+#if WIN_RT || PCL
+        /// <summary>
+        /// Create a <see cref="TwitterException"/> instance from the <see cref="AsyncResponse"/>.
+        /// </summary>
+        /// <returns><see cref="TwitterException"/> instance or null.</returns>
+        public static async Task<TwitterException> Create(AsyncResponse response)
+        {
+            try
+            {
+                using(var sr = new StreamReader(await response.GetResponseStreamAsync().ConfigureAwait(false)))
+                    return Create(
+                        await sr.ReadToEndAsync().ConfigureAwait(false),
+                        (HttpStatusCode)response.StatusCode,
+                        null,
+                        InternalUtils.ReadRateLimit(response)
+                    );
+            }
+            catch
+            {
+                return null;
+            }
+        }
+#endif
     }
 }

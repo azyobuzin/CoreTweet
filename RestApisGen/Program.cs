@@ -12,7 +12,7 @@ namespace RestApisGen
 
             Console.WriteLine("Reading API templates");
             var apis = Directory.GetFiles(Path.Combine(basePath, "ApiTemplates")).Where(x => !x.Contains("test.api"))
-                .Select(ApiParent.Parse).ToArray();
+                .Select(ApiParent.Parse);
 
             Console.WriteLine("Generating RestApis.cs");
             using (var writer = File.CreateText(Path.Combine(basePath, "CoreTweet.Shared", "RestApis.cs")))

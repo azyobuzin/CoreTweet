@@ -1,7 +1,7 @@
 // The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2013-2015 CoreTweet Development Team
+// Copyright (c) 2013-2016 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -63,6 +63,13 @@ namespace LibAzyotter
         /// </summary>
         [JsonProperty("description")]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the email address.
+        /// <para>Nullable.</para>
+        /// </summary>
+        [JsonProperty("email")]
+        public string Email { get; set; }
 
         /// <summary>
         /// Gets or sets the entities which have been parsed out of the URL or description fields defined by the user.
@@ -403,9 +410,15 @@ namespace LibAzyotter
         [JsonProperty("followed_by")]
         public bool IsFollowedBy { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the user has received a follower request from the other.
+        /// </summary>
         [JsonProperty("following_received")]
         public bool? IsFollowingReceived { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the user has sent a follower request to the other.
+        /// </summary>
         [JsonProperty("following_requested")]
         public bool? IsFollowingRequested { get; set; }
     }

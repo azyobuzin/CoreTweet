@@ -1,7 +1,7 @@
 // The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2013-2015 CoreTweet Development Team
+// Copyright (c) 2013-2016 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -120,7 +120,7 @@ namespace LibAzyotter.Internal
 
 #if !NET35
             // Tuple<Tuple<string, Any>, Tuple<string, Any>, ...>
-            if (type.Namespace == "System" && type.Name.StartsWith("Tuple`"))
+            if (type.Namespace == "System" && type.Name.StartsWith("Tuple`", StringComparison.Ordinal))
             {
                 var items = EnumerateTupleItems(t).ToArray();
                 try
@@ -171,7 +171,7 @@ namespace LibAzyotter.Internal
                 var props = type.GetProperties();
 #endif
 
-                foreach(var p in props.Where(x => x.Name.StartsWith("Item")).OrderBy(x => x.Name))
+                foreach(var p in props.Where(x => x.Name.StartsWith("Item", StringComparison.Ordinal)).OrderBy(x => x.Name))
                     yield return p.GetValue(tuple, null);
 
                 if(type.GetGenericTypeDefinition() == typeof(Tuple<,,,,,,,>))
@@ -241,6 +241,22 @@ namespace LibAzyotter.Internal
         }
 
 #if false
+        internal static T ReadResponse<T>(HttpWebResponse response, string jsonPath)
+        {
+            using(var sr = new StreamReader(response.GetResponseStream()))
+            {
+                var json = sr.ReadToEnd();
+                var result = CoreBase.Convert<T>(json, jsonPath);
+                var twitterResponse = result as ITwitterResponse;
+                if(twitterResponse != null)
+                {
+                    twitterResponse.RateLimit = ReadRateLimit(response);
+                    twitterResponse.Json = json;
+                }
+                return result;
+            }
+        }
+
         /// <summary>
         /// id, slug, etc
         /// </summary>

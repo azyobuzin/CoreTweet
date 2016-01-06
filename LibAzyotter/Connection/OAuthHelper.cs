@@ -8,7 +8,7 @@ namespace LibAzyotter.Connection
 {
     public static class OAuthHelper
     {
-        private static string[] encodeMap = new[]
+        private static string[] encodeMap =
         {
             "%00", "%01", "%02", "%03", "%04", "%05", "%06", "%07",
             "%08", "%09", "%0A", "%0B", "%0C", "%0D", "%0E", "%0F",
@@ -90,7 +90,7 @@ namespace LibAzyotter.Connection
 
         public static Dictionary<string, string> OAuthParameters(string consumerKey, string token, string callback, string verifier)
         {
-            var dic = new Dictionary<string, string>()
+            var dic = new Dictionary<string, string>
             {
                 { "oauth_consumer_key", consumerKey },
                 { "oauth_signature_method",  "HMAC-SHA1" },

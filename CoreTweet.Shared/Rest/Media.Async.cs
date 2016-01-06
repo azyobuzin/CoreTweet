@@ -1,7 +1,7 @@
 ﻿// The MIT License (MIT)
 //
 // CoreTweet - A .NET Twitter Library supporting Twitter API 1.1
-// Copyright (c) 2013-2015 CoreTweet Development Team
+// Copyright (c) 2013-2016 CoreTweet Development Team
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,14 +25,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using LibAzyotter.Connection;
 using LibAzyotter.Internal;
-using Newtonsoft.Json.Linq;
 
 namespace LibAzyotter.Api
 {
@@ -51,135 +49,58 @@ namespace LibAzyotter.Api
                 return await TwitterClient.ReadResponse(res, s => CoreBase.Convert<MediaUploadResult>(s)).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Upload media (images) to Twitter for use in a Tweet or Twitter-hosted Card as an asynchronous operation.
-        /// <para>Available parameters:</para>
-        /// <para>- <c>Stream</c> / <c>IEnumerable&lt;byte&gt;</c> / <c>FileInfo</c> media (required)</para>
-        /// </summary>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns>
-        /// <para>The task object representing the asynchronous operation.</para>
-        /// <para>The Result property on the task object returns the result for the uploaded media.</para>
-        /// </returns>
-        public Task<MediaUploadResult> UploadAsync(params Expression<Func<string, object>>[] parameters)
+        private Task<HttpResponseMessage> CommandAsync(string command, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
-            return this.UploadAsyncImpl(InternalUtils.ExpressionsToDictionary(parameters), CancellationToken.None);
+            return this.AccessUploadApiAsync(parameters.EndWith(new KeyValuePair<string, object>("command", command)), cancellationToken);
         }
 
-        /// <summary>
-        /// Upload media (images) to Twitter for use in a Tweet or Twitter-hosted Card as an asynchronous operation.
-        /// <para>Available parameters:</para>
-        /// <para>- <c>Stream</c> / <c>IEnumerable&lt;byte&gt;</c> / <c>FileInfo</c> media (required)</para>
-        /// </summary>
-        /// <param name="parameters">The parameters.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// <para>The task object representing the asynchronous operation.</para>
-        /// <para>The Result property on the task object returns the result for the uploaded media.</para>
-        /// </returns>
-        public Task<MediaUploadResult> UploadAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken = default(CancellationToken))
+        private async Task<T> CommandAsync<T>(string command, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
-            return this.UploadAsyncImpl(parameters, cancellationToken);
+            using (var res = await this.CommandAsync(command, parameters, cancellationToken).ConfigureAwait(false))
+                return await TwitterClient.ReadResponse(res, s => CoreBase.Convert<T>(s)).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Upload media (images) to Twitter for use in a Tweet or Twitter-hosted Card as an asynchronous operation.
-        /// <para>Available parameters:</para>
-        /// <para>- <c>Stream</c> / <c>IEnumerable&lt;byte&gt;</c> / <c>FileInfo</c> media (required)</para>
-        /// </summary>
-        /// <param name="parameters">The parameters.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// <para>The task object representing the asynchronous operation.</para>
-        /// <para>The Result property on the task object returns the result for the uploaded media.</para>
-        /// </returns>
-        public Task<MediaUploadResult> UploadAsync(object parameters, CancellationToken cancellationToken = default(CancellationToken))
+        private Task<UploadInitCommandResult> UploadInitCommandAsyncImpl(IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
-            return this.UploadAsyncImpl(InternalUtils.ResolveObject(parameters), cancellationToken);
+            return this.CommandAsync<UploadInitCommandResult>("INIT", parameters, cancellationToken);
         }
 
-        /// <summary>
-        /// Upload media (images) to Twitter for use in a Tweet or Twitter-hosted Card as an asynchronous operation.
-        /// </summary>
-        /// <param name="media">The raw binary file content being uploaded.</param>
-        /// <param name="additional_owners">A comma-separated string of user IDs to set as additional owners who are allowed to use the returned media_id in Tweets or Cards.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The result for the uploaded media.</returns>
-        public Task<MediaUploadResult> UploadAsync(Stream media, IEnumerable<long> additional_owners = null, CancellationToken cancellationToken = default(CancellationToken))
+        private Task UploadAppendCommandAsyncImpl(IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
-            if (media == null) throw new ArgumentNullException(nameof(media));
-            var parameters = new Dictionary<string, object>();
-            parameters.Add(nameof(media), media);
-            if (additional_owners != null) parameters.Add(nameof(additional_owners), additional_owners);
-            return this.UploadAsyncImpl(parameters, cancellationToken);
+            return this.CommandAsync("APPEND", parameters, cancellationToken)
+                .Done(res => res.Dispose(), cancellationToken);
         }
 
-        /// <summary>
-        /// Upload media (images) to Twitter for use in a Tweet or Twitter-hosted Card as an asynchronous operation.
-        /// </summary>
-        /// <param name="media">The raw binary file content being uploaded.</param>
-        /// <param name="additional_owners">A comma-separated string of user IDs to set as additional owners who are allowed to use the returned media_id in Tweets or Cards.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The result for the uploaded media.</returns>
-        public Task<MediaUploadResult> UploadAsync(IEnumerable<byte> media, IEnumerable<long> additional_owners = null, CancellationToken cancellationToken = default(CancellationToken))
+        private Task<MediaUploadResult> UploadFinalizeCommandAsyncImpl(IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
-            if (media == null) throw new ArgumentNullException(nameof(media));
-            var parameters = new Dictionary<string, object>();
-            parameters.Add(nameof(media), media);
-            if (additional_owners != null) parameters.Add(nameof(additional_owners), additional_owners);
-            return this.UploadAsyncImpl(parameters, cancellationToken);
-        }
-
-#if !(PCL || WIN_RT)
-        /// <summary>
-        /// Upload media (images) to Twitter for use in a Tweet or Twitter-hosted Card as an asynchronous operation.
-        /// </summary>
-        /// <param name="media">The raw binary file content being uploaded.</param>
-        /// <param name="additional_owners">A comma-separated string of user IDs to set as additional owners who are allowed to use the returned media_id in Tweets or Cards.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The result for the uploaded media.</returns>
-        public Task<MediaUploadResult> UploadAsync(FileInfo media, IEnumerable<long> additional_owners = null, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (media == null) throw new ArgumentNullException(nameof(media));
-            var parameters = new Dictionary<string, object>();
-            parameters.Add(nameof(media), media);
-            if (additional_owners != null) parameters.Add(nameof(additional_owners), additional_owners);
-            return this.UploadAsyncImpl(parameters, cancellationToken);
-        }
-#endif
-
-        /// <summary>
-        /// Upload media (images) to Twitter for use in a Tweet or Twitter-hosted Card as an asynchronous operation.
-        /// </summary>
-        /// <param name="media_data">The base64-encoded file content being uploaded.</param>
-        /// <param name="additional_owners">A comma-separated string of user IDs to set as additional owners who are allowed to use the returned media_id in Tweets or Cards.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The result for the uploaded media.</returns>
-        public Task<MediaUploadResult> UploadAsync(string media_data, IEnumerable<long> additional_owners = null, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (media_data == null) throw new ArgumentNullException(nameof(media_data));
-            var parameters = new Dictionary<string, object>();
-            parameters.Add(nameof(media_data), media_data);
-            if (additional_owners != null) parameters.Add(nameof(additional_owners), additional_owners);
-            return this.UploadAsyncImpl(parameters, cancellationToken);
+            return this.CommandAsync<MediaUploadResult>("FINALIZE", parameters, cancellationToken);
         }
 
         private static Task WhenAll(List<Task> tasks)
         {
-#if NET40 || PCL
-            var tcs = new TaskCompletionSource<bool>();
+#if NET40
+            var tcs = new TaskCompletionSource<Unit>();
             var count = tasks.Count;
+            var exceptions = new List<Exception>();
             foreach (var task in tasks)
             {
                 task.ContinueWith(t =>
                 {
                     var i = Interlocked.Decrement(ref count);
-                    if (t.IsFaulted)
-                        tcs.TrySetException(t.Exception.InnerException);
-                    else if (t.IsCanceled)
+                    if (t.IsCanceled)
                         tcs.TrySetCanceled();
-                    else if (i <= 0)
-                        tcs.TrySetResult(true);
+                    else
+                    {
+                        if (t.IsFaulted)
+                            exceptions.AddRange(t.Exception.InnerExceptions);
+                        if (i <= 0)
+                        {
+                            if (exceptions.Count > 0)
+                                tcs.TrySetException(exceptions);
+                            else
+                                tcs.TrySetResult(Unit.Default);
+                        }
+                    }
                 });
             }
             return tcs.Task;
@@ -190,81 +111,38 @@ namespace LibAzyotter.Api
 
         private Task<MediaUploadResult> UploadChunkedAsyncImpl(Stream media, int totalBytes, UploadMediaType mediaType, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
-            return this.AccessUploadApiAsync(
-                new Dictionary<string, object>()
+            return this.UploadInitCommandAsyncImpl(
+                parameters.EndWith(
+                    new KeyValuePair<string, object>("total_bytes", totalBytes),
+                    new KeyValuePair<string, object>("media_type", mediaType)
+                ), cancellationToken)
+                .Done(result =>
                 {
-                    { "command", "INIT" },
-                    { "total_bytes", totalBytes },
-                    { "media_type", GetMediaTypeString(mediaType) }
-                }.Concat(parameters), cancellationToken)
-                .ContinueWith(
-                    t => TwitterClient.ReadResponse(t.Result, s => (string)JObject.Parse(s)["media_id_string"]),
-                    cancellationToken
-                )
-                .Unwrap()
-                .ContinueWith(t =>
-                {
-                    if(t.IsFaulted)
-                        t.Exception.InnerException.Rethrow();
-
-                    var mediaId = t.Result;
                     var tasks = new List<Task>();
                     const int maxChunkSize = 5 * 1000 * 1000;
                     var remainingBytes = totalBytes;
 
-                    for (var i = 0; remainingBytes > 0; i++)
+                    for (var segmentIndex = 0; remainingBytes > 0; segmentIndex++)
                     {
-                        var segmentIndex = i; // to capture the variable
-                        var chunkSize = remainingBytes < maxChunkSize ? remainingBytes : maxChunkSize;
+                        var chunkSize = Math.Min(remainingBytes, maxChunkSize);
                         var chunk = new byte[chunkSize];
                         var readCount = media.Read(chunk, 0, chunkSize);
                         if (readCount == 0) break;
-                        if (chunkSize != readCount)
-                        {
-                            var newChunk = new byte[readCount];
-                            Buffer.BlockCopy(chunk, 0, newChunk, 0, readCount);
-                            chunk = newChunk;
-                        }
                         remainingBytes -= readCount;
                         tasks.Add(
-                            this.AccessUploadApiAsync(
-                                new Dictionary<string, object>()
+                            this.UploadAppendCommandAsyncImpl(
+                                new Dictionary<string, object>
                                 {
-                                    { "command", "APPEND" },
-                                    { "media_id", mediaId },
+                                    { "media_id", result.MediaId },
                                     { "segment_index", segmentIndex },
-                                    { "media", chunk }
+                                    { "media", new ArraySegment<byte>(chunk, 0, readCount) }
                                 }, cancellationToken
                             )
-                            .ContinueWith(t2 =>
-                            {
-                                if (t2.IsFaulted)
-                                    t2.Exception.InnerException.Rethrow();
-
-                                t2.Result.Dispose();
-                            }, cancellationToken)
                         );
                     }
 
                     return WhenAll(tasks)
-                        .ContinueWith(x =>
-                        {
-                            if(x.IsFaulted)
-                                x.Exception.InnerException.Rethrow();
-
-                            return AccessUploadApiAsync(
-                                new Dictionary<string, object>()
-                                {
-                                    { "command", "FINALIZE" },
-                                    { "media_id", mediaId }
-                                }, cancellationToken)
-                                .ContinueWith(
-                                    y => TwitterClient.ReadResponse(y.Result, s => CoreBase.Convert<MediaUploadResult>(s)),
-                                    cancellationToken
-                                )
-                                .Unwrap();
-                        }, cancellationToken
-                        )
+                        .Done(() => this.UploadFinalizeCommandAsync(result.MediaId, cancellationToken), cancellationToken)
                         .Unwrap();
                 }, cancellationToken)
                 .Unwrap();
