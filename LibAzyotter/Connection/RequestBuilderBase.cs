@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 
 #if WIN_RT
@@ -47,27 +49,72 @@ namespace LibAzyotter.Connection
             return new Uri(new Uri(baseUri), relativeUri);
         }
 
+        private static object FormatObject(object x)
+        {
+            if (x is string) return x;
+            if (x is int)
+                return ((int)x).ToString("D", CultureInfo.InvariantCulture);
+            if (x is long)
+                return ((long)x).ToString("D", CultureInfo.InvariantCulture);
+            if (x is double)
+            {
+                var s = ((double)x).ToString("F99", CultureInfo.InvariantCulture).TrimEnd('0');
+                if (s[s.Length - 1] == '.') s += '0';
+                return s;
+            }
+            if (x is float)
+            {
+                var s = ((float)x).ToString("F99", CultureInfo.InvariantCulture).TrimEnd('0');
+                if (s[s.Length - 1] == '.') s += '0';
+                return s;
+            }
+            if (x is uint)
+                return ((uint)x).ToString("D", CultureInfo.InvariantCulture);
+            if (x is ulong)
+                return ((ulong)x).ToString("D", CultureInfo.InvariantCulture);
+            if (x is short)
+                return ((short)x).ToString("D", CultureInfo.InvariantCulture);
+            if (x is ushort)
+                return ((ushort)x).ToString("D", CultureInfo.InvariantCulture);
+            if (x is decimal)
+                return ((decimal)x).ToString(CultureInfo.InvariantCulture);
+            if (x is byte)
+                return ((byte)x).ToString("D", CultureInfo.InvariantCulture);
+            if (x is sbyte)
+                return ((sbyte)x).ToString("D", CultureInfo.InvariantCulture);
+
+            if (x is UploadMediaType)
+                return Api.Media.GetMediaTypeString((UploadMediaType)x);
+
+            if (x is IEnumerable<string>
+                || x is IEnumerable<int>
+                || x is IEnumerable<long>
+                || x is IEnumerable<double>
+                || x is IEnumerable<float>
+                || x is IEnumerable<uint>
+                || x is IEnumerable<ulong>
+                || x is IEnumerable<short>
+                || x is IEnumerable<ushort>
+                || x is IEnumerable<decimal>)
+            {
+                return (x as System.Collections.IEnumerable).Cast<object>().Select(FormatObject).JoinToString(",");
+            }
+
+            var type = x.GetType().GetTypeInfo();
+            if (type.Name == "FSharpOption`1")
+            {
+                return FormatObject(type.GetDeclaredProperty("Value").GetValue(x));
+            }
+
+            return x;
+        }
+
         protected virtual IEnumerable<KeyValuePair<string, object>> FormatParameters(IEnumerable<KeyValuePair<string, object>> source)
         {
-            if (source == null) return new KeyValuePair<string, object>[] { };
+            if (source == null) return new KeyValuePair<string, object>[0];
 
-            // TokensBase.CollectionToCommaSeparatedString
-            return source.Where(kvp => kvp.Key != null && kvp.Value != null).Select(kvp =>
-                kvp.Value is IEnumerable<string>
-                    || kvp.Value is IEnumerable<int>
-                    || kvp.Value is IEnumerable<uint>
-                    || kvp.Value is IEnumerable<long>
-                    || kvp.Value is IEnumerable<ulong>
-                    || kvp.Value is IEnumerable<decimal>
-                    || kvp.Value is IEnumerable<float>
-                    || kvp.Value is IEnumerable<double>
-                ? new KeyValuePair<string, object>(
-                    kvp.Key,
-                    ((System.Collections.IEnumerable)kvp.Value)
-                        .Cast<object>().Select(x => x.ToString())
-                        .JoinToString(","))
-                : kvp
-            );
+            return source.Where(kvp => kvp.Key != null && kvp.Value != null)
+                .Select(kvp => new KeyValuePair<string, object>(kvp.Key, FormatObject(kvp.Value)));
         }
 
         protected virtual
