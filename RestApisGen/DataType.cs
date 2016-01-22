@@ -335,7 +335,7 @@ namespace RestApisGen
             {
                 var dic = new Dictionary<string, Method[]>();
                 dic.Add("asyncpe", new[] { this.PEAsync });
-                dic.Add("asyncid", new[] { this.IDAsync });
+                //dic.Add("asyncid", new[] { this.IDAsync });
                 dic.Add("asynct", new[] { this.TAsync });
                 dic.Add("asyncstatic", this.StaticAsync);
                 return dic;

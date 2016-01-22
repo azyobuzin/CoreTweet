@@ -192,11 +192,6 @@ namespace LibAzyotter
             return this.AccessApiAsyncImpl<T>(type, url, InternalUtils.ResolveObject(parameters), cancellationToken, jsonPath);
         }
 
-        internal Task<T> AccessApiAsync<T>(HttpMethod type, string url, IDictionary<string, object> parameters, CancellationToken cancellationToken, string jsonPath = "")
-        {
-            return this.AccessApiAsyncImpl<T>(type, url, parameters, cancellationToken, jsonPath);
-        }
-
         internal Task<T> AccessApiAsyncImpl<T>(HttpMethod type, string url, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken, string jsonPath)
         {
             return this.AccessApiAsyncImpl(type, url, parameters, cancellationToken, s => CoreBase.Convert<T>(s, jsonPath));
@@ -210,11 +205,6 @@ namespace LibAzyotter
         internal Task<ListedResponse<T>> AccessApiArrayAsync<T>(HttpMethod type, string url, object parameters, CancellationToken cancellationToken, string jsonPath = "")
         {
             return this.AccessApiArrayAsyncImpl<T>(type, url, InternalUtils.ResolveObject(parameters), cancellationToken, jsonPath);
-        }
-
-        internal Task<ListedResponse<T>> AccessApiArrayAsync<T>(HttpMethod type, string url, IDictionary<string, object> parameters, CancellationToken cancellationToken, string jsonPath = "")
-        {
-            return this.AccessApiArrayAsyncImpl<T>(type, url, parameters, cancellationToken, jsonPath);
         }
 
         internal Task<ListedResponse<T>> AccessApiArrayAsyncImpl<T>(HttpMethod type, string url, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken, string jsonPath)
@@ -232,11 +222,6 @@ namespace LibAzyotter
             return this.AccessApiDictionaryAsyncImpl<TKey, TValue>(type, url, InternalUtils.ResolveObject(parameters), cancellationToken, jsonPath);
         }
 
-        internal Task<DictionaryResponse<TKey, TValue>> AccessApiDictionaryAsync<TKey, TValue>(HttpMethod type, string url, IDictionary<string, object> parameters, CancellationToken cancellationToken, string jsonPath = "")
-        {
-            return this.AccessApiDictionaryAsyncImpl<TKey, TValue>(type, url, parameters, cancellationToken, jsonPath);
-        }
-
         internal Task<DictionaryResponse<TKey, TValue>> AccessApiDictionaryAsyncImpl<TKey, TValue>(HttpMethod type, string url, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken, string jsonPath)
         {
             return this.AccessApiAsyncImpl(type, url, parameters, cancellationToken, s => new DictionaryResponse<TKey, TValue>(CoreBase.Convert<Dictionary<TKey, TValue>>(s, jsonPath)));
@@ -251,12 +236,6 @@ namespace LibAzyotter
         {
             return this.AccessApiNoResponseAsyncImpl(url, InternalUtils.ResolveObject(parameters), cancellationToken);
         }
-
-        internal Task AccessApiNoResponseAsync(string url, IDictionary<string, object> parameters, CancellationToken cancellationToken)
-        {
-            return this.AccessApiNoResponseAsyncImpl(url, parameters, cancellationToken);
-        }
-
         internal async Task AccessApiNoResponseAsyncImpl(string url, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
         {
             var res = await this.InternalSendRequestAsync(HttpMethod.Post, url, parameters, cancellationToken).ConfigureAwait(false);
