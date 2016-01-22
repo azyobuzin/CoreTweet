@@ -32,7 +32,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Objects\Setting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Objects\Status.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Objects\User.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RestApis.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Streaming\Messages.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Streaming\Stream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rest\Media.Async.cs" />

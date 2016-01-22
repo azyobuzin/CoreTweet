@@ -95,7 +95,7 @@ endpoint UserResponse UpdateProfileBackgroundImage : Post account/update_profile
     {
         either Stream image
         either IEnumerable<byte> image
-        either FileInfo image when !(PCL || WIN_RT)
+        either FileInfo image when !(PCL || WIN_RT || DOTNET5_2)
         either
         optional bool tile
         optional bool include_entities
@@ -123,7 +123,7 @@ endpoint void UpdateProfileBanner : Post account/update_profile_banner
     {
         either Stream image
         either IEnumerable<byte> image
-        either FileInfo image when !(PCL || WIN_RT)
+        either FileInfo image when !(PCL || WIN_RT || DOTNET5_2)
         either string banner
         optional string width
         optional string height
@@ -176,7 +176,7 @@ endpoint UserResponse UpdateProfileImage : Post account/update_profile_image
     {
         either Stream image
         either IEnumerable<byte> image
-        either FileInfo image when !(PCL || WIN_RT)
+        either FileInfo image when !(PCL || WIN_RT || DOTNET5_2)
         optional bool include_entities
         optional bool skip_status
     }

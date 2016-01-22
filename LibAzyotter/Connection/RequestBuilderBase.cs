@@ -78,7 +78,7 @@ namespace LibAzyotter.Connection
         {
             var prmArray = parameters.ToArray();
             if (prmArray.Select(x => x.Value).Any(x => x is Stream || x is IEnumerable<byte>
-#if !(PCL || WIN_RT)
+#if !(PCL || WIN_RT || DOTNET5_2)
                 || x is FileInfo
 #endif
 #if WIN_RT
@@ -94,7 +94,7 @@ namespace LibAzyotter.Connection
                     var valueStream = x.Value as Stream;
                     var valueBytes = x.Value as IEnumerable<byte>;
 
-#if !(PCL || WIN_RT)
+#if !(PCL || WIN_RT || DOTNET5_2)
                     var valueFileInfo = x.Value as FileInfo;
                     if (valueFileInfo != null)
                     {
